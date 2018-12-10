@@ -89,6 +89,11 @@ const isAnyDiagonalComplete = (board, currentPlayer) => {
   return diagonals.reduce((complete, diagonal) => complete || isLineComplete(diagonal, currentPlayer), false);
 };
 
+const isBoardFull = (board) => {
+  // return board.reduce((full, row) => full || row.every(value => value !== NONE), false)
+  return board.every(row => row.every(value => value !== NONE));
+}
+
 const checkForWinner = () => {
   // for each row, check if row is completed
   // for each col, check if col is completed
@@ -117,6 +122,8 @@ const test = () => {
   const prettyPrintBoard = (board) => {
     board.forEach(row => console.log(row));
   };
+  
+  let board;
   
   // ======== Test initializeGame ==========
   // let game = initializeGame();
@@ -176,26 +183,39 @@ const test = () => {
   // console.log('before check winner:\n', game);
   // console.log('is any col complete:\n', isAnyColComplete(game.board, game.currentPlayer));
   
-  // ======== Test isAnyColComplete ==========
-  let game = initializeGame();
-  game = updateBoard(game, 0, 2);
-  game = updateCurrentPlayer(game, O);
-  game = updateBoard(game, 0, 0);
-  game = updateCurrentPlayer(game, X);
-  game = updateBoard(game, 1, 1);
-  game = updateCurrentPlayer(game, O);
-  game = updateBoard(game, 2, 1);
-  game = updateCurrentPlayer(game, X);
-  game = updateBoard(game, 2, 0);
+  // ======== Test isAnyDiagonalComplete ==========
+  // let game = initializeGame();
+  // game = updateBoard(game, 0, 2);
+  // game = updateCurrentPlayer(game, O);
+  // game = updateBoard(game, 0, 0);
+  // game = updateCurrentPlayer(game, X);
+  // game = updateBoard(game, 1, 1);
+  // game = updateCurrentPlayer(game, O);
+  // game = updateBoard(game, 2, 1);
+  // game = updateCurrentPlayer(game, X);
+  // game = updateBoard(game, 2, 0);
   
-  // // Test getDiagonals
-  console.log('rows:');
-  prettyPrintBoard(game.board);
-  console.log('diagonals:');
-  prettyPrintBoard(getDiagonals(game.board));
+  // // // Test getDiagonals
+  // console.log('rows:');
+  // prettyPrintBoard(game.board);
+  // console.log('diagonals:');
+  // prettyPrintBoard(getDiagonals(game.board));
   
-  console.log('before check winner:\n', game);
-  console.log('is any diagonal complete:\n', isAnyDiagonalComplete(game.board, game.currentPlayer));
+  // console.log('before check winner:\n', game);
+  // console.log('is any diagonal complete:\n', isAnyDiagonalComplete(game.board, game.currentPlayer));
+  
+  // ======== Test isBoardFull ==========
+  board = [[X, X, X, ], [X, X, X, ], [X, X, X, ],];
+  prettyPrintBoard(board);
+  console.log('is board full: ', isBoardFull(board)); // expect true
+  
+  board = [[X, O, X, ], [X, X, X, ], [X, X, X, ],];
+  prettyPrintBoard(board);
+  console.log('is board full: ', isBoardFull(board)); // expect true
+  
+  board = [[X, NONE, X, ], [X, X, X, ], [X, X, X, ],];
+  prettyPrintBoard(board);
+  console.log('is board full: ', isBoardFull(board)); // expect false
 };
 
 test();
