@@ -84,27 +84,35 @@ const getDiagonals = (board) => {
   
   return diagonals;
 }
+
 const isAnyDiagonalComplete = (board, currentPlayer) => {
   const diagonals = getDiagonals(board);
   return diagonals.reduce((complete, diagonal) => complete || isLineComplete(diagonal, currentPlayer), false);
 };
 
 const isBoardFull = (board) => {
-  // return board.reduce((full, row) => full || row.every(value => value !== NONE), false)
   return board.every(row => row.every(value => value !== NONE));
 }
 
-const checkForWinner = () => {
+const checkForWinner = (board, currentPlayer) => {
   // for each row, check if row is completed
   // for each col, check if col is completed
   // for each diagonal, check if diagonal is completed
   // if any of the above is completed
   //   return currentPlayer
+  if (isAnyRowComplete(board, currentPlayer) || 
+    isAnyColComplete(board, currentPlayer) || 
+    isAnyDiagonalComplete(board, currentPlayer)) {
+    return currentPlayer;
+  }
   // if board is full
   //   return tie
+  if (isBoardFull(board)) {
+    return TIE;
+  }
   // return none
+  return NONE;
 };
-
 
 const resetGame = () => {};
 
@@ -205,17 +213,54 @@ const test = () => {
   // console.log('is any diagonal complete:\n', isAnyDiagonalComplete(game.board, game.currentPlayer));
   
   // ======== Test isBoardFull ==========
-  board = [[X, X, X, ], [X, X, X, ], [X, X, X, ],];
-  prettyPrintBoard(board);
-  console.log('is board full: ', isBoardFull(board)); // expect true
+  // board = [[X, X, X, ], [X, X, X, ], [X, X, X, ],];
+  // prettyPrintBoard(board);
+  // console.log('is board full: ', isBoardFull(board)); // expect true
   
-  board = [[X, O, X, ], [X, X, X, ], [X, X, X, ],];
-  prettyPrintBoard(board);
-  console.log('is board full: ', isBoardFull(board)); // expect true
+  // board = [[X, O, X, ], [X, X, X, ], [X, X, X, ],];
+  // prettyPrintBoard(board);
+  // console.log('is board full: ', isBoardFull(board)); // expect true
   
-  board = [[X, NONE, X, ], [X, X, X, ], [X, X, X, ],];
+  // board = [[X, NONE, X, ], [X, X, X, ], [X, X, X, ],];
+  // prettyPrintBoard(board);
+  // console.log('is board full: ', isBoardFull(board)); // expect false
+  
+  // ======== Test checkForWinner ==========
+  board = [
+    [X, O, NONE, ], 
+    [NONE, X, NONE, ], 
+    [NONE, O, X, ],
+  ];
+  
   prettyPrintBoard(board);
-  console.log('is board full: ', isBoardFull(board)); // expect false
+  console.log('checkForWinner: ', checkForWinner(board, X)); // expect X
+  
+  board = [
+    [X, O, NONE, ], 
+    [NONE, O, NONE, ], 
+    [X, O, X, ],
+  ];
+  
+  prettyPrintBoard(board);
+  console.log('checkForWinner: ', checkForWinner(board, O)); // expect O
+  
+  board = [
+    [X, O, X, ], 
+    [O, X, X, ], 
+    [X, O, O, ],
+  ];
+  
+  prettyPrintBoard(board);
+  console.log('checkForWinner: ', checkForWinner(board, X)); // expect tie
+  
+  board = [
+    [X, O, X, ], 
+    [O, X, X, ], 
+    [X, O, NONE, ],
+  ];
+  
+  prettyPrintBoard(board);
+  console.log('checkForWinner: ', checkForWinner(board, O)); // expect none
 };
 
 test();
