@@ -4,14 +4,14 @@
 const X = 'X';
 const O = 'O';
 const TIE = 'TIE';
-const EMPTY = '';
+const NONE = '';
 const BOARD_SIZE = 3;
 
 const initializeGame = () => ({
   currentPlayer: X,
   gameEnded: false,
-  winner: EMPTY,
-  board: [[EMPTY, EMPTY, EMPTY, ], [EMPTY, EMPTY, EMPTY, ], [EMPTY, EMPTY, EMPTY, ], ],
+  winner: NONE,
+  board: [[NONE, NONE, NONE, ], [NONE, NONE, NONE, ], [NONE, NONE, NONE, ], ],
 });
 
 const updateCurrentPlayer = (game, player) => {
@@ -38,7 +38,45 @@ const updateBoard = (game, placedRow, placedCol) => {
   return Object.assign({}, game, { board:  generateUpdatedBoard(game.board, game.currentPlayer, placedRow, placedCol) });
 };
 
-const checkForWinner = () => {};
+const isLineComplete = (line, currentPlayer) => {
+  return line.every(value => value === currentPlayer);
+}
+
+const isAnyRowComplete = (board, currentPlayer) => {
+  return board.reduce((complete, row) => complete || isLineComplete(row, currentPlayer), false);
+};
+
+const transpose = (rows) => {
+  const cols = [];
+  for (let row = 0; row < BOARD_SIZE; row++) {
+    cols.push([]);
+    for (let col = 0; col < BOARD_SIZE; col++) {
+      cols[row].push(rows[col][row]);
+    }
+  }
+  
+  return cols;
+};
+
+const isAnyColComplete = (board, currentPlayer) => {
+  const cols = transpose(board);
+  return cols.reduce((complete, col) => complete || isLineComplete(col, currentPlayer), false);
+};
+
+const isAnyDiagonalComplete = () => {};
+
+const checkForWinner = () => {
+  // for each row, check if row is completed
+  // for each col, check if col is completed
+  // for each diagonal, check if diagonal is completed
+  // if any of the above is completed
+  //   return currentPlayer
+  // if board is full
+  //   return tie
+  // return none
+};
+
+
 const resetGame = () => {};
 
 // VIEW
@@ -52,6 +90,10 @@ const resetClickHandler = () => {};
 
 // TESTING
 const test = () => {
+  const prettyPrintBoard = (board) => {
+    board.forEach(row => console.log(row));
+  };
+  
   // ======== Test initializeGame ==========
   // let game = initializeGame();
   // console.log('intial game:', game);
@@ -70,10 +112,45 @@ const test = () => {
   // updatedBoard = generateUpdatedBoard(updatedBoard, O, 0, 0);
   // console.log('updated board 3:', updatedBoard);
   
-  // // ======== Test updateBoard ==========
+  // ========== Test updateBoard ==========
+  // let game = initializeGame();
+  // game = updateBoard(game, 1, 1);
+  // console.log('placed X on (1, 1):\n', game);
+  
+  // ======== Test isAnyRowComplete ==========
+  // let game = initializeGame();
+  // game = updateBoard(game, 1, 1);
+  // game = updateCurrentPlayer(game, O);
+  // game = updateBoard(game, 0, 0);
+  // game = updateCurrentPlayer(game, X);
+  // game = updateBoard(game, 1, 0);
+  // game = updateCurrentPlayer(game, O);
+  // game = updateBoard(game, 2, 1);
+  // game = updateCurrentPlayer(game, X);
+  // game = updateBoard(game, 1, 2);
+  // console.log('before check winner:\n', game);
+  // console.log('is any row complete:\n', isAnyRowComplete(game.board, game.currentPlayer));
+  
+  // ======== Test isAnyColComplete ==========
   let game = initializeGame();
-  game = updateBoard(game, 1, 1);
-  console.log('placed X on (1, 1):\n', game);
+  game = updateBoard(game, 1, 2);
+  game = updateCurrentPlayer(game, O);
+  game = updateBoard(game, 0, 0);
+  game = updateCurrentPlayer(game, X);
+  game = updateBoard(game, 2, 2);
+  game = updateCurrentPlayer(game, O);
+  game = updateBoard(game, 2, 1);
+  game = updateCurrentPlayer(game, X);
+  game = updateBoard(game, 0, 2);
+  
+  // Test transpose
+  console.log('rows:');
+  prettyPrintBoard(game.board);
+  console.log('cols:');
+  prettyPrintBoard(transpose(game.board));
+  
+  console.log('before check winner:\n', game);
+  console.log('is any col complete:\n', isAnyColComplete(game.board, game.currentPlayer));
 };
 
 test();
