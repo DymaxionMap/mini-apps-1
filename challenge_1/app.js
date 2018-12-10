@@ -63,7 +63,31 @@ const isAnyColComplete = (board, currentPlayer) => {
   return cols.reduce((complete, col) => complete || isLineComplete(col, currentPlayer), false);
 };
 
-const isAnyDiagonalComplete = () => {};
+const getDiagonals = (board) => {
+  const diagonals = [[], []];
+  
+  for (let row = 0; row < BOARD_SIZE; row++) {
+    for (let col = 0; col < BOARD_SIZE; col++) {
+      if (row === col) {
+        diagonals[0].push(board[row][col]);
+      }
+    }
+  }
+  
+  for (let row = 0; row < BOARD_SIZE; row++) {
+    for (let col = 0; col < BOARD_SIZE; col++) {
+      if (row === (BOARD_SIZE - 1) - col) {
+        diagonals[1].push(board[row][col]);
+      }
+    }
+  }
+  
+  return diagonals;
+}
+const isAnyDiagonalComplete = (board, currentPlayer) => {
+  const diagonals = getDiagonals(board);
+  return diagonals.reduce((complete, diagonal) => complete || isLineComplete(diagonal, currentPlayer), false);
+};
 
 const checkForWinner = () => {
   // for each row, check if row is completed
@@ -132,25 +156,46 @@ const test = () => {
   // console.log('is any row complete:\n', isAnyRowComplete(game.board, game.currentPlayer));
   
   // ======== Test isAnyColComplete ==========
+  // let game = initializeGame();
+  // game = updateBoard(game, 1, 2);
+  // game = updateCurrentPlayer(game, O);
+  // game = updateBoard(game, 0, 0);
+  // game = updateCurrentPlayer(game, X);
+  // game = updateBoard(game, 2, 2);
+  // game = updateCurrentPlayer(game, O);
+  // game = updateBoard(game, 2, 1);
+  // game = updateCurrentPlayer(game, X);
+  // game = updateBoard(game, 0, 2);
+  
+  // // Test transpose
+  // console.log('rows:');
+  // prettyPrintBoard(game.board);
+  // console.log('cols:');
+  // prettyPrintBoard(transpose(game.board));
+  
+  // console.log('before check winner:\n', game);
+  // console.log('is any col complete:\n', isAnyColComplete(game.board, game.currentPlayer));
+  
+  // ======== Test isAnyColComplete ==========
   let game = initializeGame();
-  game = updateBoard(game, 1, 2);
+  game = updateBoard(game, 0, 2);
   game = updateCurrentPlayer(game, O);
   game = updateBoard(game, 0, 0);
   game = updateCurrentPlayer(game, X);
-  game = updateBoard(game, 2, 2);
+  game = updateBoard(game, 1, 1);
   game = updateCurrentPlayer(game, O);
   game = updateBoard(game, 2, 1);
   game = updateCurrentPlayer(game, X);
-  game = updateBoard(game, 0, 2);
+  game = updateBoard(game, 2, 0);
   
-  // Test transpose
+  // // Test getDiagonals
   console.log('rows:');
   prettyPrintBoard(game.board);
-  console.log('cols:');
-  prettyPrintBoard(transpose(game.board));
+  console.log('diagonals:');
+  prettyPrintBoard(getDiagonals(game.board));
   
   console.log('before check winner:\n', game);
-  console.log('is any col complete:\n', isAnyColComplete(game.board, game.currentPlayer));
+  console.log('is any diagonal complete:\n', isAnyDiagonalComplete(game.board, game.currentPlayer));
 };
 
 test();
