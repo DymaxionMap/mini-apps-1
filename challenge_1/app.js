@@ -94,7 +94,7 @@ class TicTacToe {
   
   resetGame() {
     this._initialize();
-    clearBoard();
+    resetView();
   }
   
   move(row, col) {
@@ -103,7 +103,18 @@ class TicTacToe {
       this.checkForWinner();
       if (!this.gameEnded) {
         this.currentPlayer = (this.currentPlayer === this.X) ? this.O : this.X;
+      } else {
+        this.declareWinner();
       }
+    }
+  }
+  
+  declareWinner() {
+    console.log(this.winner);
+    if (this.winner === this.X || this.winner === this.O) {
+      renderWinner(this.winner);
+    } else if (this.winner === this.TIE) {
+      renderTie();
     }
   }
   
@@ -222,13 +233,18 @@ const renderWinner = (winner) => {
   winnerDisplay.classList.remove('hidden');
 };
 
-
-
 const renderTie = () => {
   const winnerDisplay = document.getElementById('winnerDisplay');
   winnerDisplay.innerText = `There is a tie!`;
   winnerDisplay.classList.remove('hidden');
 };
+
+const resetView = () => {
+  clearBoard();
+  const winnerDisplay = document.getElementById('winnerDisplay');
+  winnerDisplay.innerText = '';
+  winnerDisplay.classList.add('hidden');
+}
 
 // TEST VIEW
 // ====== Test renderBoard ======
@@ -249,13 +265,6 @@ const renderTie = () => {
 
 // CONTROLLER
 const boardClickHandler = (event, ticTacToe, row, col) => {
-  // if (!ticTacToe.gameEnded) {
-  //   ticTacToe.updateBoard(row, col);
-  //   ticTacToe.checkForWinner();
-  //   if (!ticTacToe.gameEnded) {
-  //     ticTacToe.currentPlayer = (ticTacToe.currentPlayer === ticTacToe.X) ? ticTacToe.O : ticTacToe.X;
-  //   }
-  // }
   ticTacToe.move(row, col);
 };
 
@@ -279,10 +288,7 @@ const addResetClickHandler = (ticTacToe) => {
   resetButton.addEventListener('click', event => resetClickHandler(event, ticTacToe));
 }
 
-// Test
-const rows = document.getElementById('board').children;
 const ticTacToe = new TicTacToe();
-console.log(ticTacToe.board);
 addBoardClickHandlers(ticTacToe);
 addResetClickHandler(ticTacToe);
 
