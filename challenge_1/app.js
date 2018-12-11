@@ -12,11 +12,11 @@ class TicTacToe {
     this.winCount = {
       [this.X]: 0,
       [this.O]: 0,
-    }
+    };
     this.playerName = {
-      [this.X]: 'Stephen',
-      [this.O]: null,
-    }
+      [this.X]: this.NONE,
+      [this.O]: this.NONE,
+    };
   }
   
   _initialize(firstPlayer = this.X) {
@@ -124,6 +124,11 @@ class TicTacToe {
       }
     }
   }
+  
+  changePlayerName(xPlayerName = this.NONE, oPlayerName = this.NONE) {
+    this.playerName[this.X] = (xPlayerName !== this.NONE) ? xPlayerName : this.NONE;
+    this.playerName[this.O] = (oPlayerName !== this.NONE) ? oPlayerName : this.NONE;
+  }
 }
 
 // VIEW
@@ -132,13 +137,13 @@ const renderBoard = (ticTacToe) => {
   const length = rows.length;
   for (let i = 0; i < length; i++) {
     for (let j = 0; j < length; j++) {
-      let playerName = null;
+      let playerName = ticTacToe.NONE;
       if (ticTacToe.board[i][j] === ticTacToe.X) {
         playerName = ticTacToe.playerName[ticTacToe.X];
       } else if (ticTacToe.board[i][j] === ticTacToe.O) {
         playerName = ticTacToe.playerName[ticTacToe.O];
       }
-      if (playerName) {
+      if (playerName !== ticTacToe.NONE) {
         rows[i].children[j].innerText = `${ticTacToe.board[i][j]} | ${playerName}`;
       } else {
         rows[i].children[j].innerText = `${ticTacToe.board[i][j]}`;
@@ -197,6 +202,14 @@ const addResetClickHandler = (ticTacToe) => {
   resetButton.addEventListener('click', event => resetClickHandler(event, ticTacToe));
 };
 
+const addPlayerNameSubmitHandler = (ticTacToe) => {
+  playerNameSubmitButton = document.getElementById('playerNameSubmit');
+  playerNameSubmitButton.addEventListener('click', event => {
+    event.preventDefault();
+    playerNameSubmitHandler(ticTacToe);
+  });
+}
+
 // CONTROLLER
 const boardClickHandler = (event, ticTacToe, row, col) => {
   ticTacToe.move(row, col);
@@ -206,7 +219,14 @@ const resetClickHandler = (event, ticTacToe) => {
   ticTacToe.resetGame();
 };
 
+const playerNameSubmitHandler = (ticTacToe) => {
+  const xPlayerName = document.getElementById('playerXName').value.trim();
+  const oPlayerName = document.getElementById('playerOName').value.trim();
+  ticTacToe.changePlayerName(xPlayerName, oPlayerName);
+}
+
 // INITIALIZE
 const ticTacToe = new TicTacToe();
 addBoardClickHandlers(ticTacToe);
 addResetClickHandler(ticTacToe);
+addPlayerNameSubmitHandler(ticTacToe);
