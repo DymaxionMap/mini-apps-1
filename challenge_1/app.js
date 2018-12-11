@@ -95,38 +95,23 @@ const isBoardFull = (board) => {
 }
 
 const checkForWinner = (board, currentPlayer) => {
-  // for each row, check if row is completed
-  // for each col, check if col is completed
-  // for each diagonal, check if diagonal is completed
-  // if any of the above is completed
-  //   return currentPlayer
   if (isAnyRowComplete(board, currentPlayer) || 
     isAnyColComplete(board, currentPlayer) || 
     isAnyDiagonalComplete(board, currentPlayer)) {
     return currentPlayer;
   }
-  // if board is full
-  //   return tie
+
   if (isBoardFull(board)) {
     return TIE;
   }
-  // return none
+
   return NONE;
 };
 
 const resetGame = () => {};
 
-// VIEW
-const renderBoard = () => {};
-const renderWinnerDisplay = () => {};
-const renderResetButton = () => {};
-
-// CONTROLLER
-const boardClickHandler = () => {};
-const resetClickHandler = () => {};
-
-// TESTING
-const test = () => {
+// TEST MODEL
+const testModel = () => {
   const prettyPrintBoard = (board) => {
     board.forEach(row => console.log(row));
   };
@@ -226,41 +211,81 @@ const test = () => {
   // console.log('is board full: ', isBoardFull(board)); // expect false
   
   // ======== Test checkForWinner ==========
-  board = [
-    [X, O, NONE, ], 
-    [NONE, X, NONE, ], 
-    [NONE, O, X, ],
-  ];
+  // board = [
+  //   [X, O, NONE, ], 
+  //   [NONE, X, NONE, ], 
+  //   [NONE, O, X, ],
+  // ];
   
-  prettyPrintBoard(board);
-  console.log('checkForWinner: ', checkForWinner(board, X)); // expect X
+  // prettyPrintBoard(board);
+  // console.log('checkForWinner: ', checkForWinner(board, X)); // expect X
   
-  board = [
-    [X, O, NONE, ], 
-    [NONE, O, NONE, ], 
-    [X, O, X, ],
-  ];
+  // board = [
+  //   [X, O, NONE, ], 
+  //   [NONE, O, NONE, ], 
+  //   [X, O, X, ],
+  // ];
   
-  prettyPrintBoard(board);
-  console.log('checkForWinner: ', checkForWinner(board, O)); // expect O
+  // prettyPrintBoard(board);
+  // console.log('checkForWinner: ', checkForWinner(board, O)); // expect O
   
-  board = [
-    [X, O, X, ], 
-    [O, X, X, ], 
-    [X, O, O, ],
-  ];
+  // board = [
+  //   [X, O, X, ], 
+  //   [O, X, X, ], 
+  //   [X, O, O, ],
+  // ];
   
-  prettyPrintBoard(board);
-  console.log('checkForWinner: ', checkForWinner(board, X)); // expect tie
+  // prettyPrintBoard(board);
+  // console.log('checkForWinner: ', checkForWinner(board, X)); // expect tie
   
-  board = [
-    [X, O, X, ], 
-    [O, X, X, ], 
-    [X, O, NONE, ],
-  ];
+  // board = [
+  //   [X, O, X, ], 
+  //   [O, X, X, ], 
+  //   [X, O, NONE, ],
+  // ];
   
-  prettyPrintBoard(board);
-  console.log('checkForWinner: ', checkForWinner(board, O)); // expect none
+  // prettyPrintBoard(board);
+  // console.log('checkForWinner: ', checkForWinner(board, O)); // expect none
 };
 
-test();
+// testModel();
+
+
+
+// VIEW
+const renderBoard = (board, rows) => {
+  const length = rows.length;
+  for (let i = 0; i < length; i++) {
+    for (let j = 0; j < length; j++) {
+      rows[i].children[j].innerText = board[i][j];
+    }
+  }
+};
+
+const clearBoard = (rows) => {
+  const length = rows.length;
+  for (let i = 0; i < length; i++) {
+    for (let j = 0; j < length; j++) {
+      rows[i].children[j].innerText = '';
+    }
+  }
+};
+
+const renderWinnerDisplay = () => {};
+const renderResetButton = () => {};
+
+// TEST VIEW
+// const rows = document.getElementById('board').children;
+// const board = [
+//   [X, O, X, ], 
+//   [O, X, X, ], 
+//   [X, O, NONE, ],
+// ];
+
+// renderBoard(board, rows);
+// setTimeout(() => {clearBoard(rows)}, 1000);
+
+// CONTROLLER
+const boardClickHandler = () => {};
+const resetClickHandler = () => {};
+
