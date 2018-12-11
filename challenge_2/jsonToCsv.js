@@ -53,7 +53,7 @@ const recordsToCsv = records => {
 
   const headers = Object.keys(records[0]);
   const rows = records.map(Object.values);
-  return [headers, ...rows];
+  return [headers, rows];
 };
 
 jsonToCsv = json => {

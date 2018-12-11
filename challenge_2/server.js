@@ -4,12 +4,12 @@ const bodyParser = require('body-parser');
 const path = require('path');
 // app imports
 const jsonToCsv = require(path.join(__dirname, 'jsonToCsv'));
-
+const renderCsvReport = require(path.join(__dirname, 'view'));
 
 const app = express();
 const port = 3000;
 
-// app.use(bodyParser.json());
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'client')));
 
@@ -23,9 +23,8 @@ app.get('/report', (req, res) => {
 
 app.post('/report', (req, res) => {
   const report = req.body.reportText;
-  const csv = jsonToCsv(report);
-  console.log(csv);
-  res.redirect('/');
+  const [headers, rows] = jsonToCsv(report);
+  res.send(renderCsvReport(headers, rows));
 })
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));
