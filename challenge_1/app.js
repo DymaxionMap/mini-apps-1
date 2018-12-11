@@ -94,6 +94,7 @@ class TicTacToe {
   
   resetGame() {
     this._initialize();
+    clearBoard();
   }
   
 }
@@ -247,10 +248,12 @@ const boardClickHandler = (event, ticTacToe, row, col) => {
   }
 };
 
-const resetClickHandler = () => {};
+const resetClickHandler = (event, ticTacToe) => {
+  ticTacToe.resetGame();
+};
 
 // INIT
-const addClickHandlers = (ticTacToe) => {
+const addBoardClickHandlers = (ticTacToe) => {
   const rows = document.getElementById('board').children;
   const length = rows.length;
   for (let i = 0; i < length; i++) {
@@ -260,12 +263,17 @@ const addClickHandlers = (ticTacToe) => {
     }
   }
 };
+const addResetClickHandler = (ticTacToe) => {
+  const resetButton = document.getElementById('reset');
+  resetButton.addEventListener('click', event => resetClickHandler(event, ticTacToe));
+}
 
 // Test
 const rows = document.getElementById('board').children;
 const ticTacToe = new TicTacToe();
 console.log(ticTacToe.board);
-addClickHandlers(ticTacToe);
+addBoardClickHandlers(ticTacToe);
+addResetClickHandler(ticTacToe);
 
 
 
