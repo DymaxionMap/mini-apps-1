@@ -287,8 +287,6 @@ const renderTie = () => {
   winnerDisplay.classList.remove('hidden');
 };
 
-setTimeout(() => {renderTie('X')}, 3000)
-
 // TEST VIEW
 // ====== Test renderBoard ======
 // const rows = document.getElementById('board').children;
@@ -307,6 +305,27 @@ setTimeout(() => {renderTie('X')}, 3000)
 // setTimeout(() => {renderTie('X')}, 3000)
 
 // CONTROLLER
-const boardClickHandler = () => {};
+const boardClickHandler = (event, row, col) => {
+  console.log(`clicked ${row}, ${col}`);
+};
+
 const resetClickHandler = () => {};
+
+// INIT
+const addClickHandlers = () => {
+  const rows = document.getElementById('board').children;
+  const length = rows.length;
+  for (let i = 0; i < length; i++) {
+    for (let j = 0; j < length; j++) {
+      let square = rows[i].children[j];
+      square.addEventListener('click', event => boardClickHandler(event, i, j));
+    }
+  }
+};
+
+// Test
+const rows = document.getElementById('board').children;
+addClickHandlers();
+
+
 
