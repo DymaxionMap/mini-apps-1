@@ -9,5 +9,9 @@ app.get('/', (req, res) => {
   res.sendfile(path.join(__dirname, 'client', 'index.html'));
 });
 
+app.post('/', (req, res) => {
+  console.log('Someone posted something to /');
+})
+
 app.listen(port, () => console.log(`App listening on port ${port}!`));
 
