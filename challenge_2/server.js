@@ -1,6 +1,11 @@
+// node imports
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+// app imports
+const jsonToCsv = require(path.join(__dirname, 'jsonToCsv'));
+
+
 const app = express();
 const port = 3000;
 
@@ -17,7 +22,9 @@ app.get('/report', (req, res) => {
 });
 
 app.post('/report',(req, res) => {
-  console.log(req.body.reportText);
+  const report = req.body.reportText;
+  console.log(report);
+  jsonToCsv();
   res.redirect('/');
 })
 
