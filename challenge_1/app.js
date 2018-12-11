@@ -54,6 +54,21 @@ class TicTacToe {
     return false;
   }
   
+  _isAnyDiagonalComplete() {
+    
+    let majorDiagonalComplete = true;
+    for (let i = 0; i < this.BOARD_SIZE; i++) {
+      majorDiagonalComplete = majorDiagonalComplete && this.board[i][i] === this.currentPlayer;
+    }
+    
+    let minorDiagonalComplete = true;
+    for (let i = 0; i < this.BOARD_SIZE; i++) {
+      minorDiagonalComplete = minorDiagonalComplete && this.board[i][(this.BOARD_SIZE - 1) - i] === this.currentPlayer;
+    }
+    
+    return majorDiagonalComplete || minorDiagonalComplete;
+  }
+  
 }
 
 // TEST MODEL
@@ -72,13 +87,21 @@ var ticTacToe = new TicTacToe();
 // ];
 // console.log(ticTacToe._isAnyRowComplete());
 
-ticTacToe.updateCurrentPlayer(ticTacToe.O);
+// ticTacToe.updateCurrentPlayer(ticTacToe.O);
+// ticTacToe.board = [
+//   ['', 'X', 'O',],
+//   ['', 'X', 'O',],
+//   ['', 'O', 'O',],
+// ];
+// console.log(ticTacToe._isAnyColumnComplete());
+
+ticTacToe.updateCurrentPlayer(ticTacToe.X);
 ticTacToe.board = [
-  ['', 'X', 'O',],
-  ['', 'X', 'O',],
-  ['', 'O', 'O',],
+  ['X', '', '',],
+  ['', 'X', '',],
+  ['', '', 'X',],
 ];
-console.log(ticTacToe._isAnyColumnComplete());
+console.log(ticTacToe._isAnyDiagonalComplete());
 
 
 // const isLineComplete = (line, currentPlayer) => {
