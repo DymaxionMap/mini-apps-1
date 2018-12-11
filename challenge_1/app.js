@@ -253,7 +253,8 @@ const testModel = () => {
 
 
 // VIEW
-const renderBoard = (board, rows) => {
+const renderBoard = (board) => {
+  const rows = document.getElementById('board').children;
   const length = rows.length;
   for (let i = 0; i < length; i++) {
     for (let j = 0; j < length; j++) {
@@ -262,7 +263,8 @@ const renderBoard = (board, rows) => {
   }
 };
 
-const clearBoard = (rows) => {
+const clearBoard = () => {
+  const rows = document.getElementById('board').children;
   const length = rows.length;
   for (let i = 0; i < length; i++) {
     for (let j = 0; j < length; j++) {
@@ -271,10 +273,24 @@ const clearBoard = (rows) => {
   }
 };
 
-const renderWinnerDisplay = () => {};
-const renderResetButton = () => {};
+const renderWinner = (winner) => {
+  const winnerDisplay = document.getElementById('winnerDisplay');
+  winnerDisplay.innerText = `The winner is: ${winner}!`;
+  winnerDisplay.classList.remove('hidden');
+};
+
+
+
+const renderTie = () => {
+  const winnerDisplay = document.getElementById('winnerDisplay');
+  winnerDisplay.innerText = `There is a tie!`;
+  winnerDisplay.classList.remove('hidden');
+};
+
+setTimeout(() => {renderTie('X')}, 3000)
 
 // TEST VIEW
+// ====== Test renderBoard ======
 // const rows = document.getElementById('board').children;
 // const board = [
 //   [X, O, X, ], 
@@ -283,7 +299,12 @@ const renderResetButton = () => {};
 // ];
 
 // renderBoard(board, rows);
+// ====== Test clearBoard ======
 // setTimeout(() => {clearBoard(rows)}, 1000);
+// ====== Test renderWinner ======
+// setTimeout(() => {renderWinner('X')}, 1500)
+// ====== Test renderTie ======
+// setTimeout(() => {renderTie('X')}, 3000)
 
 // CONTROLLER
 const boardClickHandler = () => {};
