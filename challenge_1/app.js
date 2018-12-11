@@ -10,8 +10,8 @@ class TicTacToe {
     this._initialize();
   }
   
-  _initialize() {
-    this.currentPlayer = this.X;
+  _initialize(player = this.X) {
+    this.currentPlayer = player;
     this.gameEnded = false;
     this.winner = this.NONE;
     this.board = [
@@ -90,7 +90,7 @@ class TicTacToe {
   }
   
   resetGame() {
-    this._initialize();
+    this._initialize(this.winner);
     resetView();
   }
   
