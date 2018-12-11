@@ -32,22 +32,53 @@ class TicTacToe {
     this.board[row][col] = this.currentPlayer;
   }
   
-  // _isAnyRowComplete() {  
-  //   return board.some(row => {
-  //     return row.every(square => square === currentPlayer);
-  //   });
-  // }
+  _isAnyRowComplete() {  
+    return this.board.some(row => {
+      return row.every(square => square === this.currentPlayer);
+    });
+  }
+  
+  _isAnyColumnComplete() {
+    let complete;
+    for (let col = 0; col < this.BOARD_SIZE; col++) {
+      complete = true;
+      for (let row = 0; row < this.BOARD_SIZE; row++) {
+        this.board[row][col];
+        complete = complete && this.board[row][col] === this.currentPlayer;
+      }
+      if (complete) {
+        return true;
+      }
+    }
+    
+    return false;
+  }
   
 }
 
 // TEST MODEL
 var ticTacToe = new TicTacToe();
-ticTacToe._prettyPrintBoard();
-console.log(ticTacToe.currentPlayer);
+// ticTacToe._prettyPrintBoard();
+// console.log(ticTacToe.currentPlayer);
+// ticTacToe.updateCurrentPlayer(ticTacToe.O);
+// console.log(ticTacToe.currentPlayer);
+// ticTacToe.updateBoard(1, 1);
+// ticTacToe._prettyPrintBoard();
+
+// ticTacToe.board = [
+//   ['', '', '',],
+//   ['', '', '',],
+//   ['X', 'X', 'X',],
+// ];
+// console.log(ticTacToe._isAnyRowComplete());
+
 ticTacToe.updateCurrentPlayer(ticTacToe.O);
-console.log(ticTacToe.currentPlayer);
-ticTacToe.updateBoard(1, 1);
-ticTacToe._prettyPrintBoard();
+ticTacToe.board = [
+  ['', 'X', 'O',],
+  ['', 'X', 'O',],
+  ['', 'O', 'O',],
+];
+console.log(ticTacToe._isAnyColumnComplete());
 
 
 // const isLineComplete = (line, currentPlayer) => {
