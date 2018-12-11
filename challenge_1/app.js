@@ -97,6 +97,16 @@ class TicTacToe {
     clearBoard();
   }
   
+  move(row, col) {
+    if (!this.gameEnded) {
+      this.updateBoard(row, col);
+      this.checkForWinner();
+      if (!this.gameEnded) {
+        this.currentPlayer = (this.currentPlayer === this.X) ? this.O : this.X;
+      }
+    }
+  }
+  
 }
 
 // TEST MODEL
@@ -239,13 +249,14 @@ const renderTie = () => {
 
 // CONTROLLER
 const boardClickHandler = (event, ticTacToe, row, col) => {
-  if (!ticTacToe.gameEnded) {
-    ticTacToe.updateBoard(row, col);
-    ticTacToe.checkForWinner();
-    if (!ticTacToe.gameEnded) {
-      ticTacToe.currentPlayer = (ticTacToe.currentPlayer === ticTacToe.X) ? ticTacToe.O : ticTacToe.X;
-    }
-  }
+  // if (!ticTacToe.gameEnded) {
+  //   ticTacToe.updateBoard(row, col);
+  //   ticTacToe.checkForWinner();
+  //   if (!ticTacToe.gameEnded) {
+  //     ticTacToe.currentPlayer = (ticTacToe.currentPlayer === ticTacToe.X) ? ticTacToe.O : ticTacToe.X;
+  //   }
+  // }
+  ticTacToe.move(row, col);
 };
 
 const resetClickHandler = (event, ticTacToe) => {
