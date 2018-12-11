@@ -21,10 +21,10 @@ app.get('/report', (req, res) => {
   res.redirect('/');
 });
 
-app.post('/report',(req, res) => {
+app.post('/report', (req, res) => {
   const report = req.body.reportText;
-  console.log(report);
-  jsonToCsv();
+  const csv = jsonToCsv(report);
+  console.log(csv);
   res.redirect('/');
 })
 
