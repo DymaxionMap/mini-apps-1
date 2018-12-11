@@ -10,6 +10,10 @@ class TicTacToe {
     this.NONE = '';
     this.BOARD_SIZE = 3;
     
+    this._initialize();
+  }
+  
+  _initialize() {
     this.currentPlayer = this.X;
     this.gameEnded = false;
     this.winner = this.NONE;
@@ -30,6 +34,7 @@ class TicTacToe {
   
   updateBoard(row, col) {
     this.board[row][col] = this.currentPlayer;
+    renderBoard(this.board);
   }
   
   _isAnyRowComplete() {  
@@ -69,7 +74,7 @@ class TicTacToe {
     return majorDiagonalComplete || minorDiagonalComplete;
   }
   
-  _isBoardFull () {
+  _isBoardFull() {
     return this.board.every(row => row.every(value => value !== this.NONE));
   }
   
@@ -87,10 +92,14 @@ class TicTacToe {
     }
   }
   
+  resetGame() {
+    this._initialize();
+  }
+  
 }
 
 // TEST MODEL
-var ticTacToe = new TicTacToe();
+// var ticTacToe = new TicTacToe();
 // ticTacToe._prettyPrintBoard();
 // console.log(ticTacToe.currentPlayer);
 // ticTacToe.updateCurrentPlayer(ticTacToe.O);
@@ -164,14 +173,14 @@ var ticTacToe = new TicTacToe();
 // console.log(ticTacToe.winner);
 // console.log(ticTacToe.gameEnded);
 
-ticTacToe.board = [
-  ['X', 'O', 'X',],
-  ['O', '', 'X',],
-  ['O', 'X', 'O',],
-];
-ticTacToe.checkForWinner();
-console.log(ticTacToe.winner);
-console.log(ticTacToe.gameEnded);
+// ticTacToe.board = [
+//   ['X', 'O', 'X',],
+//   ['O', '', 'X',],
+//   ['O', 'X', 'O',],
+// ];
+// ticTacToe.checkForWinner();
+// console.log(ticTacToe.winner);
+// console.log(ticTacToe.gameEnded);
 
 
 
@@ -228,27 +237,36 @@ const renderTie = () => {
 // setTimeout(() => {renderTie('X')}, 3000)
 
 // CONTROLLER
-const boardClickHandler = (event, row, col) => {
-  console.log(`clicked ${row}, ${col}`);
+const boardClickHandler = (event, ticTacToe, row, col) => {
+  if (!ticTacToe.gameEnded) {
+    ticTacToe.updateBoard(row, col);
+    ticTacToe.checkForWinner();
+    if (!ticTacToe.gameEnded) {
+      ticTacToe.currentPlayer = (ticTacToe.currentPlayer === ticTacToe.X) ? ticTacToe.O : ticTacToe.X;
+    }
+  }
 };
 
 const resetClickHandler = () => {};
 
 // INIT
-const addClickHandlers = () => {
+const addClickHandlers = (ticTacToe) => {
   const rows = document.getElementById('board').children;
   const length = rows.length;
   for (let i = 0; i < length; i++) {
     for (let j = 0; j < length; j++) {
       let square = rows[i].children[j];
-      square.addEventListener('click', event => boardClickHandler(event, i, j));
+      square.addEventListener('click', event => boardClickHandler(event, ticTacToe, i, j));
     }
   }
 };
 
 // Test
-// const rows = document.getElementById('board').children;
-// addClickHandlers();
+const rows = document.getElementById('board').children;
+const ticTacToe = new TicTacToe();
+console.log(ticTacToe.board);
+addClickHandlers(ticTacToe);
+
 
 
 
