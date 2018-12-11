@@ -1,7 +1,4 @@
 // MODEL
-
-// Constants
-
 class TicTacToe {
   constructor() {
     this.X = 'X';
@@ -97,20 +94,7 @@ class TicTacToe {
     resetView();
   }
   
-  move(row, col) {
-    if (!this.gameEnded) {
-      this.updateBoard(row, col);
-      this.checkForWinner();
-      if (!this.gameEnded) {
-        this.currentPlayer = (this.currentPlayer === this.X) ? this.O : this.X;
-      } else {
-        this.declareWinner();
-      }
-    }
-  }
-  
-  declareWinner() {
-    console.log(this.winner);
+  _declareWinner() {
     if (this.winner === this.X || this.winner === this.O) {
       renderWinner(this.winner);
     } else if (this.winner === this.TIE) {
@@ -118,93 +102,18 @@ class TicTacToe {
     }
   }
   
+  move(row, col) {
+    if (!this.gameEnded) {
+      this.updateBoard(row, col);
+      this.checkForWinner();
+      if (!this.gameEnded) {
+        this.currentPlayer = (this.currentPlayer === this.X) ? this.O : this.X;
+      } else {
+        this._declareWinner();
+      }
+    }
+  }
 }
-
-// TEST MODEL
-// var ticTacToe = new TicTacToe();
-// ticTacToe._prettyPrintBoard();
-// console.log(ticTacToe.currentPlayer);
-// ticTacToe.updateCurrentPlayer(ticTacToe.O);
-// console.log(ticTacToe.currentPlayer);
-// ticTacToe.updateBoard(1, 1);
-// ticTacToe._prettyPrintBoard();
-
-// ticTacToe.board = [
-//   ['', '', '',],
-//   ['', '', '',],
-//   ['X', 'X', 'X',],
-// ];
-// console.log(ticTacToe._isAnyRowComplete());
-
-// ticTacToe.updateCurrentPlayer(ticTacToe.O);
-// ticTacToe.board = [
-//   ['', 'X', 'O',],
-//   ['', 'X', 'O',],
-//   ['', 'O', 'O',],
-// ];
-// console.log(ticTacToe._isAnyColumnComplete());
-
-// ticTacToe.updateCurrentPlayer(ticTacToe.X);
-// ticTacToe.board = [
-//   ['X', '', '',],
-//   ['', 'X', '',],
-//   ['', '', 'X',],
-// ];
-// console.log(ticTacToe._isAnyDiagonalComplete());
-
-// ticTacToe.board = [
-//   ['X', 'X', 'X',],
-//   ['X', 'X', 'X',],
-//   ['X', 'X', 'X',],
-// ];
-// console.log(ticTacToe._isBoardFull());
-
-// ticTacToe.board = [
-//   ['X', '', '',],
-//   ['', 'X', '',],
-//   ['', '', 'X',],
-// ];
-// ticTacToe.checkForWinner();
-// console.log(ticTacToe.winner);
-
-// ticTacToe.updateCurrentPlayer(ticTacToe.O);
-// ticTacToe.board = [
-//   ['', 'O', '',],
-//   ['', 'O', '',],
-//   ['', 'O', '',],
-// ];
-// ticTacToe.checkForWinner();
-// console.log(ticTacToe.winner);
-// console.log(ticTacToe.gameEnded);
-
-// ticTacToe.board = [
-//   ['X', 'X', 'X',],
-//   ['', '', '',],
-//   ['', '', '',],
-// ];
-// ticTacToe.checkForWinner();
-// console.log(ticTacToe.winner);
-// console.log(ticTacToe.gameEnded);
-
-// ticTacToe.board = [
-//   ['X', 'O', 'X',],
-//   ['O', 'X', 'X',],
-//   ['O', 'X', 'O',],
-// ];
-// ticTacToe.checkForWinner();
-// console.log(ticTacToe.winner);
-// console.log(ticTacToe.gameEnded);
-
-// ticTacToe.board = [
-//   ['X', 'O', 'X',],
-//   ['O', '', 'X',],
-//   ['O', 'X', 'O',],
-// ];
-// ticTacToe.checkForWinner();
-// console.log(ticTacToe.winner);
-// console.log(ticTacToe.gameEnded);
-
-
 
 // VIEW
 const renderBoard = (board) => {
@@ -244,35 +153,8 @@ const resetView = () => {
   const winnerDisplay = document.getElementById('winnerDisplay');
   winnerDisplay.innerText = '';
   winnerDisplay.classList.add('hidden');
-}
-
-// TEST VIEW
-// ====== Test renderBoard ======
-// const rows = document.getElementById('board').children;
-// const board = [
-//   [X, O, X, ], 
-//   [O, X, X, ], 
-//   [X, O, NONE, ],
-// ];
-
-// renderBoard(board, rows);
-// ====== Test clearBoard ======
-// setTimeout(() => {clearBoard(rows)}, 1000);
-// ====== Test renderWinner ======
-// setTimeout(() => {renderWinner('X')}, 1500)
-// ====== Test renderTie ======
-// setTimeout(() => {renderTie('X')}, 3000)
-
-// CONTROLLER
-const boardClickHandler = (event, ticTacToe, row, col) => {
-  ticTacToe.move(row, col);
 };
 
-const resetClickHandler = (event, ticTacToe) => {
-  ticTacToe.resetGame();
-};
-
-// INIT
 const addBoardClickHandlers = (ticTacToe) => {
   const rows = document.getElementById('board').children;
   const length = rows.length;
@@ -283,15 +165,22 @@ const addBoardClickHandlers = (ticTacToe) => {
     }
   }
 };
+
 const addResetClickHandler = (ticTacToe) => {
   const resetButton = document.getElementById('reset');
   resetButton.addEventListener('click', event => resetClickHandler(event, ticTacToe));
-}
+};
 
+// CONTROLLER
+const boardClickHandler = (event, ticTacToe, row, col) => {
+  ticTacToe.move(row, col);
+};
+
+const resetClickHandler = (event, ticTacToe) => {
+  ticTacToe.resetGame();
+};
+
+// INITIALIZE
 const ticTacToe = new TicTacToe();
 addBoardClickHandlers(ticTacToe);
 addResetClickHandler(ticTacToe);
-
-
-
-
