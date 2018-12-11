@@ -13,10 +13,14 @@ class TicTacToe {
       [this.X]: 0,
       [this.O]: 0,
     }
+    this.playerName = {
+      [this.X]: 'Stephen',
+      [this.O]: null,
+    }
   }
   
-  _initialize(player = this.X) {
-    this.currentPlayer = player;
+  _initialize(firstPlayer = this.X) {
+    this.currentPlayer = firstPlayer;
     this.gameEnded = false;
     this.winner = this.NONE;
     this.board = [
@@ -36,7 +40,7 @@ class TicTacToe {
   
   updateBoard(row, col) {
     this.board[row][col] = this.currentPlayer;
-    renderBoard(this.board);
+    renderBoard(this);
   }
   
   _isAnyRowComplete() {  
@@ -123,12 +127,22 @@ class TicTacToe {
 }
 
 // VIEW
-const renderBoard = (board) => {
+const renderBoard = (ticTacToe) => {
   const rows = document.getElementById('board').children;
   const length = rows.length;
   for (let i = 0; i < length; i++) {
     for (let j = 0; j < length; j++) {
-      rows[i].children[j].innerText = board[i][j];
+      let playerName = null;
+      if (ticTacToe.board[i][j] === ticTacToe.X) {
+        playerName = ticTacToe.playerName[ticTacToe.X];
+      } else if (ticTacToe.board[i][j] === ticTacToe.O) {
+        playerName = ticTacToe.playerName[ticTacToe.O];
+      }
+      if (playerName) {
+        rows[i].children[j].innerText = `${ticTacToe.board[i][j]} | ${playerName}`;
+      } else {
+        rows[i].children[j].innerText = `${ticTacToe.board[i][j]}`;
+      }
     }
   }
 };
