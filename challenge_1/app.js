@@ -1,6 +1,7 @@
 // MODEL
 class TicTacToe {
   constructor() {
+    // Constants
     this.X = 'X';
     this.O = 'O';
     this.TIE = 'TIE';
@@ -8,6 +9,10 @@ class TicTacToe {
     this.BOARD_SIZE = 3;
     
     this._initialize();
+    this.winCount = {
+      [this.X]: 0,
+      [this.O]: 0,
+    }
   }
   
   _initialize(player = this.X) {
@@ -97,6 +102,8 @@ class TicTacToe {
   _declareWinner() {
     if (this.winner === this.X || this.winner === this.O) {
       renderWinner(this.winner);
+      this.winCount[this.winner] += 1;
+      renderWinTally(this.winCount[this.X], this.winCount[this.O]);
     } else if (this.winner === this.TIE) {
       renderTie();
     }
@@ -147,6 +154,11 @@ const renderTie = () => {
   winnerDisplay.innerText = `There is a tie!`;
   winnerDisplay.classList.remove('hidden');
 };
+
+const renderWinTally = (xWins, oWins) => {
+  const winnerTally = document.getElementById('winnerTally');
+  winnerTally.innerText = `X: ${xWins} | O: ${oWins}`;
+}
 
 const resetView = () => {
   clearBoard();
