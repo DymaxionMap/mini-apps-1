@@ -1,122 +1,134 @@
 // MODEL
 
 // Constants
-const X = 'X';
-const O = 'O';
-const TIE = 'TIE';
-const NONE = '';
-const BOARD_SIZE = 3;
 
-const initializeGame = () => ({
-  currentPlayer: X,
-  gameEnded: false,
-  winner: NONE,
-  board: [[NONE, NONE, NONE, ], [NONE, NONE, NONE, ], [NONE, NONE, NONE, ], ],
-});
-
-const updateCurrentPlayer = (game, player) => {
-  return Object.assign({}, game, { currentPlayer:  player });
-};
-
-const generateUpdatedBoard = (board, currentPlayer, placedRow, placedCol) => {
-  const newBoard = [];
-  for (let row = 0; row < BOARD_SIZE; row++) {
-    newBoard.push([]);
-    for (let col = 0; col < BOARD_SIZE; col++) {
-      if (row === placedRow && col === placedCol) {
-        newBoard[row].push(currentPlayer);
-      } else {
-        newBoard[row].push(board[row][col]);
-      }
-    }
+class TicTacToe {
+  constructor() {
+    this.X = 'X';
+    this.O = 'O';
+    this.TIE = 'TIE';
+    this.NONE = '';
+    this.BOARD_SIZE = 3;
+    
+    this.currentPlayer = this.X;
+    this.gameEnded = false;
+    this.winner = this.NONE;
+    this.board = [
+      [this.NONE, this.NONE, this.NONE, ], 
+      [this.NONE, this.NONE, this.NONE, ], 
+      [this.NONE, this.NONE, this.NONE, ],
+    ];
   }
   
-  return newBoard;
-};
-
-const updateBoard = (game, placedRow, placedCol) => {
-  return Object.assign({}, game, { board:  generateUpdatedBoard(game.board, game.currentPlayer, placedRow, placedCol) });
-};
-
-const isLineComplete = (line, currentPlayer) => {
-  return line.every(value => value === currentPlayer);
+  _prettyPrintBoard() {
+    this.board.forEach(row => console.log(row));
+  }
+  
+  updateCurrentPlayer(player) {
+    this.currentPlayer = player;
+  }
+  
+  updateBoard(row, col) {
+    this.board[row][col] = this.currentPlayer;
+  }
+  
+  // _isAnyRowComplete() {  
+  //   return board.some(row => {
+  //     return row.every(square => square === currentPlayer);
+  //   });
+  // }
+  
 }
-
-const isAnyRowComplete = (board, currentPlayer) => {
-  return board.reduce((complete, row) => complete || isLineComplete(row, currentPlayer), false);
-};
-
-const transpose = (rows) => {
-  const cols = [];
-  for (let row = 0; row < BOARD_SIZE; row++) {
-    cols.push([]);
-    for (let col = 0; col < BOARD_SIZE; col++) {
-      cols[row].push(rows[col][row]);
-    }
-  }
-  
-  return cols;
-};
-
-const isAnyColComplete = (board, currentPlayer) => {
-  const cols = transpose(board);
-  return cols.reduce((complete, col) => complete || isLineComplete(col, currentPlayer), false);
-};
-
-const getDiagonals = (board) => {
-  const diagonals = [[], []];
-  
-  for (let row = 0; row < BOARD_SIZE; row++) {
-    for (let col = 0; col < BOARD_SIZE; col++) {
-      if (row === col) {
-        diagonals[0].push(board[row][col]);
-      }
-    }
-  }
-  
-  for (let row = 0; row < BOARD_SIZE; row++) {
-    for (let col = 0; col < BOARD_SIZE; col++) {
-      if (row === (BOARD_SIZE - 1) - col) {
-        diagonals[1].push(board[row][col]);
-      }
-    }
-  }
-  
-  return diagonals;
-}
-
-const isAnyDiagonalComplete = (board, currentPlayer) => {
-  const diagonals = getDiagonals(board);
-  return diagonals.reduce((complete, diagonal) => complete || isLineComplete(diagonal, currentPlayer), false);
-};
-
-const isBoardFull = (board) => {
-  return board.every(row => row.every(value => value !== NONE));
-}
-
-const checkForWinner = (board, currentPlayer) => {
-  if (isAnyRowComplete(board, currentPlayer) || 
-    isAnyColComplete(board, currentPlayer) || 
-    isAnyDiagonalComplete(board, currentPlayer)) {
-    return currentPlayer;
-  }
-
-  if (isBoardFull(board)) {
-    return TIE;
-  }
-
-  return NONE;
-};
-
-const resetGame = () => {};
 
 // TEST MODEL
-const testModel = () => {
-  const prettyPrintBoard = (board) => {
-    board.forEach(row => console.log(row));
-  };
+var ticTacToe = new TicTacToe();
+ticTacToe._prettyPrintBoard();
+console.log(ticTacToe.currentPlayer);
+ticTacToe.updateCurrentPlayer(ticTacToe.O);
+console.log(ticTacToe.currentPlayer);
+ticTacToe.updateBoard(1, 1);
+ticTacToe._prettyPrintBoard();
+
+
+// const isLineComplete = (line, currentPlayer) => {
+//   return line.every(value => value === currentPlayer);
+// }
+
+// const isAnyRowComplete = (board, currentPlayer) => {
+//   return board.reduce((complete, row) => complete || isLineComplete(row, currentPlayer), false);
+// };
+
+// const transpose = (rows) => {
+//   const cols = [];
+//   for (let row = 0; row < BOARD_SIZE; row++) {
+//     cols.push([]);
+//     for (let col = 0; col < BOARD_SIZE; col++) {
+//       cols[row].push(rows[col][row]);
+//     }
+//   }
   
-  let board;
+//   return cols;
+// };
+
+// const isAnyColComplete = (board, currentPlayer) => {
+//   const cols = transpose(board);
+//   return cols.reduce((complete, col) => complete || isLineComplete(col, currentPlayer), false);
+// };
+
+// const getDiagonals = (board) => {
+//   const diagonals = [[], []];
+  
+//   for (let row = 0; row < BOARD_SIZE; row++) {
+//     for (let col = 0; col < BOARD_SIZE; col++) {
+//       if (row === col) {
+//         diagonals[0].push(board[row][col]);
+//       }
+//     }
+//   }
+  
+//   for (let row = 0; row < BOARD_SIZE; row++) {
+//     for (let col = 0; col < BOARD_SIZE; col++) {
+//       if (row === (BOARD_SIZE - 1) - col) {
+//         diagonals[1].push(board[row][col]);
+//       }
+//     }
+//   }
+  
+//   return diagonals;
+// }
+
+// const isAnyDiagonalComplete = (board, currentPlayer) => {
+//   const diagonals = getDiagonals(board);
+//   return diagonals.reduce((complete, diagonal) => complete || isLineComplete(diagonal, currentPlayer), false);
+// };
+
+// const isBoardFull = (board) => {
+//   return board.every(row => row.every(value => value !== NONE));
+// }
+
+// const checkForWinner = (board, currentPlayer) => {
+//   if (isAnyRowComplete(board, currentPlayer) || 
+//     isAnyColComplete(board, currentPlayer) || 
+//     isAnyDiagonalComplete(board, currentPlayer)) {
+//     return currentPlayer;
+//   }
+
+//   if (isBoardFull(board)) {
+//     return TIE;
+//   }
+
+//   return NONE;
+// };
+
+// const resetGame = () => {};
+
+// TEST MODEL
+// const testModel = () => {
+//   const prettyPrintBoard = (board) => {
+//     board.forEach(row => console.log(row));
+//   };
+  
+//   let board;
   
   // ======== Test initializeGame ==========
   // let game = initializeGame();
@@ -246,7 +258,7 @@ const testModel = () => {
   
   // prettyPrintBoard(board);
   // console.log('checkForWinner: ', checkForWinner(board, O)); // expect none
-};
+// };
 
 // testModel();
 
@@ -324,8 +336,8 @@ const addClickHandlers = () => {
 };
 
 // Test
-const rows = document.getElementById('board').children;
-addClickHandlers();
+// const rows = document.getElementById('board').children;
+// addClickHandlers();
 
 
 
