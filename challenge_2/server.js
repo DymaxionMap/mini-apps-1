@@ -2,12 +2,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
 const fs = require('fs');
+const multer = require('multer');
+
 // app imports
 const jsonToCsv = require(path.join(__dirname, 'jsonToCsv'));
-const renderCsvReport = require(path.join(__dirname, 'view'));
+
+// File upload setup
+const UPLOAD_DIR = 'uploads';
+const upload = multer({ dest: path.join('client', UPLOAD_DIR) });
 
 const app = express();
 const port = 3000;
@@ -19,18 +22,24 @@ app.get('/', (req, res) => {
   res.sendfile(path.join(__dirname, 'client', 'index.html'));
 });
 
+app.get(`/client/${UPLOAD_DIR}/:filename`, (req, res) => {
+  console.log(req.params.filename);
+  res.redirect('/');
+})
+
 app.get('/report', (req, res) => {
   res.redirect('/');
 });
 
 app.post('/report', upload.single('reportFile'), (req, res) => {
-  fs.readFile(req.file.path, 'utf8', (err, report) => {
+  const filePath = req.file.path;
+  fs.readFile(filePath, 'utf8', (err, report) => {
     if (err) {
       throw err;
     }
 
     const [headers, rows] = jsonToCsv(report);
-    res.send({ headers, rows });
+    res.send({ headers, rows, filePath});
   });
 });
 

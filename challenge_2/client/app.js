@@ -25,6 +25,10 @@ const renderTable = (headers, rows) => {
   );
 };
 
+const renderDownloadLink = (url) => {
+  return `<a href="${url}">Download CSV report</a>`;
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   const fileInput = document.querySelector('#reportFile');
   const csvReport = document.querySelector('#csvReport');
@@ -44,13 +48,16 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const data = new FormData();
     data.append('reportFile', file);
+
     fetch('/report', {
       method: 'POST',
       body: data,
     }).then(res => {
       res.text().then(text => {
-        const { headers, rows } = JSON.parse(text);
+        const { headers, rows, filePath } = JSON.parse(text);
         csvReport.innerHTML = renderTable(headers, rows);
+        const download = document.querySelector('#download');
+        download.innerHTML = renderDownloadLink(filePath);
       });
     });
   });
