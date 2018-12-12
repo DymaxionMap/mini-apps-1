@@ -41,8 +41,8 @@ const renderTable = (headers, rows) => {
 };
 
 const renderForm = () => (
-  `<form action="/report" method="post">
-    <label for="reportText">Enter JSON Report:</label>
+  `<form action="/report" method="post" enctype="multipart/form-data">
+    <label for="reportFile">Enter JSON Report:</label>
     <input type="file" name="reportFile">
     <button type="submit">Submit Report</button>
   </form>`

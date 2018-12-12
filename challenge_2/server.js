@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
+const fs = require('fs');
 // app imports
 const jsonToCsv = require(path.join(__dirname, 'jsonToCsv'));
 const renderCsvReport = require(path.join(__dirname, 'view'));
@@ -24,14 +25,19 @@ app.get('/report', (req, res) => {
 });
 
 app.post('/report', upload.single('reportFile'), (req, res) => {
-  console.log('req.file:', req.file);
-  console.log('req.body:', req.body);
-  // console.log(typeof req.body.reportFile);
-  // console.log(req.body.reportFile);
-  // const report = req.body.reportText;
-  // const [headers, rows] = jsonToCsv(report);
-  // res.send(renderCsvReport(headers, rows));
-  res.redirect('/');
+  fs.readFile(req.file.path, 'utf8', (err, report) => {
+    if (err) {
+      throw err;
+    }
+    fs.unlink(req.file.path, err => {
+      if (err) {
+        throw err;
+      }
+
+      const [headers, rows] = jsonToCsv(report);
+      res.send(renderCsvReport(headers, rows));
+    });
+  });
 })
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));
