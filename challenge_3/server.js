@@ -1,11 +1,9 @@
 const express = require('express');
-const app = express();
-const PORT = 3000;
 
-app.get('/', (req, res) => {
-  console.log('Got a get request!');
-  res.sendStatus(200);
-});
+const PORT = 3000;
+const app = express();
+
+app.use(express.static('public'));
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
