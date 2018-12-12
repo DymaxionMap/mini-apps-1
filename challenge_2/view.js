@@ -43,11 +43,10 @@ const renderTable = (headers, rows) => {
 const renderForm = () => (
   `<form action="/report" method="post">
     <label for="reportText">Enter JSON Report:</label>
-    <textarea type="textarea" name="reportText"></textarea>
+    <input type="file" name="reportFile">
     <button type="submit">Submit Report</button>
   </form>`
 );
-
 
 const renderCsvReport = (headers, rows) => {
   return renderHtml(renderTable(headers, rows), renderForm());
