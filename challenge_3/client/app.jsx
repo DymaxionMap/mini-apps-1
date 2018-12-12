@@ -50,6 +50,23 @@ const Form3 = () => (
   </form>
 );
 
+const Confirmation = () => (
+  <div>
+    <table>
+      <tbody>
+      </tbody>
+    </table>
+    <button>Purchase</button>
+  </div>
+);
+
+const tableRow = (props) => (
+  <tr>
+    <td></td>
+    <td></td>
+  </tr>
+);
+
 // Temporarily show all the forms for development
 const App = () => (
   <div>
@@ -58,6 +75,7 @@ const App = () => (
     <Form1 />
     <Form2 />
     <Form3 />
+    <Confirmation />
   </div>
 );
 
