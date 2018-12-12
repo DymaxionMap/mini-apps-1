@@ -1,3 +1,30 @@
+const renderHeader = (headers) => {
+  return headers.reduce((headerHtml, header) => headerHtml + `<th>${header}</th>`, '');
+};
+
+const renderRow = (row) => {
+  return row.reduce((rowHtml, item) => rowHtml + `<td>${item}</td>`, '');
+};
+
+const renderRows = (rows) => {
+  return rows.reduce((tableHtml, row) => {
+    return tableHtml + `<tr>${renderRow(row)}</tr>`;
+  }, '');
+};
+
+const renderTable = (headers, rows) => {
+  return (
+    `<table>
+      <thead>
+        ${renderHeader(headers)}
+      </thead>
+      <tbody>
+        ${renderRows(rows)}
+      </tbody>
+    </table>`
+  );
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   const fileInput = document.querySelector('#reportFile');
   const csvReport = document.querySelector('#csvReport');
@@ -10,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   reportSubmitButton.addEventListener('click', (event) => {
     const file = fileInput.files[0];
-    // console.log(file);
     if (!file) {
       alert('No file was selected! Please choose a file before submitting.');
       return;
@@ -23,9 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
       body: data,
     }).then(res => {
       res.text().then(text => {
-        const csvReportData = JSON.parse(text);
-        console.log(text);
-        console.log(csvReportData);
+        const { headers, rows } = JSON.parse(text);
+        csvReport.innerHTML = renderTable(headers, rows);
       });
     });
   });
