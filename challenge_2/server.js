@@ -12,8 +12,8 @@ const renderCsvReport = require(path.join(__dirname, 'view'));
 const app = express();
 const port = 3000;
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'client')));
 
 app.get('/', (req, res) => {
@@ -24,21 +24,30 @@ app.get('/report', (req, res) => {
   res.redirect('/');
 });
 
-app.post('/report', upload.single('reportFile'), (req, res) => {
-  fs.readFile(req.file.path, 'utf8', (err, report) => {
-    if (err) {
-      throw err;
-    }
-    fs.unlink(req.file.path, err => {
-      if (err) {
-        throw err;
-      }
+// app.post('/report', upload.single('reportFile'), (req, res) => {
+//   console.log(req.file);
+//   fs.readFile(req.file.path, 'utf8', (err, report) => {
+//     if (err) {
+//       throw err;
+//     }
+//     fs.unlink(req.file.path, err => {
+//       if (err) {
+//         throw err;
+//       }
 
-      const [headers, rows] = jsonToCsv(report);
-      res.send(renderCsvReport(headers, rows));
-    });
-  });
-})
+//       const [headers, rows] = jsonToCsv(report);
+//       res.send(renderCsvReport(headers, rows));
+//     });
+//   });
+// });
+
+app.post('/report', upload.single('reportFile'), (req, res) => {
+  console.log(req.file);
+  // console.log(req.body);
+  // report = req.body;
+  // const [headers, rows] = jsonToCsv(report);
+  // res.send(renderCsvReport(headers, rows));
+});
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));
 
