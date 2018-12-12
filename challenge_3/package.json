@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
-    "build": "browserify client/app.jsx -o public/app.js -t [ babelify --presets [ @babel/preset-env @babel/preset-react ] --plugins [ babel-plugin-transform-class-properties ] ]"
+    "build": "babel client --out-dir public --watch"
   },
   "author": "",
   "license": "ISC",
@@ -19,9 +19,6 @@
     "@babel/cli": "^7.2.0",
     "@babel/core": "^7.2.0",
     "@babel/preset-env": "^7.2.0",
-    "@babel/preset-react": "^7.0.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babelify": "^10.0.0",
-    "browserify": "^16.2.3"
+    "@babel/preset-react": "^7.0.0"
   }
 }
