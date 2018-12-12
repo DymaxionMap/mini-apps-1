@@ -68,16 +68,24 @@ const tableRow = (props) => (
 );
 
 // Temporarily show all the forms for development
-const App = () => (
-  <div>
-    <Nav />
-    <Checkout />
-    <Form1 />
-    <Form2 />
-    <Form3 />
-    <Confirmation />
-  </div>
-);
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <div>
+        <Nav />
+        <Checkout />
+        <Form1 />
+        <Form2 />
+        <Form3 />
+        <Confirmation />
+      </div>
+    );
+  }
+}
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
