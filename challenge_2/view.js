@@ -13,20 +13,28 @@ const renderHtml = (table, form) => (
   `
 );
 
+const renderHeader = (headers) => {
+  return headers.reduce((html, header) => html + `<th>${header}</th>`, '');
+};
+
+const renderRow = (row) => {
+  return row.reduce((rowHtml, item) => rowHtml + `<td>${item}</td>`, '');
+};
+
+const renderRows = (rows) => {
+  return rows.reduce((tableHtml, row) => {
+    return tableHtml + `<tr>${renderRow(row)}</tr>`;
+  }, '');
+};
+
 const renderTable = (headers, rows) => {
   return (
     `<table>
       <thead>
-        <th>
-          Hello
-        </th>
+        ${renderHeader(headers)}
       </thead>
       <tbody>
-        <tr>
-          <td>
-            World
-          </td>
-        </tr>
+        ${renderRows(rows)}
       </tbody>
     </table>`
   );
@@ -42,7 +50,7 @@ const renderForm = () => (
 
 
 const renderCsvReport = (headers, rows) => {
-  return renderHtml(renderTable(), renderForm());
+  return renderHtml(renderTable(headers, rows), renderForm());
 };
 
 module.exports = renderCsvReport;
