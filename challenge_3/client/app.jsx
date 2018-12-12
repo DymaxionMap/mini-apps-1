@@ -73,7 +73,7 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      currentView: 'checkout',
+      currentView: 'form1',
     }
 
     this.checkoutClick = this.checkoutClick.bind(this);
@@ -92,6 +92,15 @@ class App extends React.Component {
   form1Click(event) {
     event.preventDefault();
     console.log('form1 was clicked');
+    const data = {hello: 'world'};
+    console.log('Sending JSON:', JSON.stringify(data));
+    fetch('/form1', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+      },
+      body: JSON.stringify(data),
+    });
     this.setState({ currentView: 'form2' });
   }
 
