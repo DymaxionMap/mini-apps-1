@@ -4,13 +4,11 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
+const upload = multer({ dest: path.join('client', 'uploads') });
 
 // app imports
 const jsonToCsv = require(path.join(__dirname, 'jsonToCsv'));
-
-// File upload setup
-const UPLOAD_DIR = 'uploads';
-const upload = multer({ dest: path.join('client', UPLOAD_DIR) });
+const csvToText = require(path.join(__dirname, 'csvToText'));
 
 const app = express();
 const port = 3000;
@@ -19,12 +17,27 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'client')));
 
 app.get('/', (req, res) => {
-  res.sendfile(path.join(__dirname, 'client', 'index.html'));
+  res.sendFile(path.join(__dirname, 'client', 'index.html'));
 });
 
-app.get(`/client/${UPLOAD_DIR}/:filename`, (req, res) => {
-  console.log(req.params.filename);
-  res.redirect('/');
+app.get(`/client/uploads/:filename`, (req, res) => {
+  const readFilePath = path.join(__dirname, 'client', 'uploads', req.params.filename);
+  fs.readFile(readFilePath, 'utf8', (err, report) => {
+    if (err) {
+      throw err;
+    }
+
+    const [headers, rows] = jsonToCsv(report);
+    const csvText = csvToText(headers, rows);
+    const writeFilePath = path.join(__dirname, 'client', 'downloads', req.params.filename);
+    fs.writeFile(writeFilePath, csvText, (err) => {
+      if (err) {
+        throw err;
+      }
+
+      res.sendFile(writeFilePath);
+    });
+  });
 })
 
 app.get('/report', (req, res) => {
