@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   reportSubmitButton.addEventListener('click', (event) => {
     const file = fileInput.files[0];
-    console.log(file);
+    // console.log(file);
     if (!file) {
       alert('No file was selected! Please choose a file before submitting.');
       return;
@@ -21,6 +21,12 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch('/report', {
       method: 'POST',
       body: data,
+    }).then(res => {
+      res.text().then(text => {
+        const csvReportData = JSON.parse(text);
+        console.log(text);
+        console.log(csvReportData);
+      });
     });
   });
 });
