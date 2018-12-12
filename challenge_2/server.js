@@ -20,6 +20,25 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'client', 'index.html'));
 });
 
+app.get('/report', (req, res) => {
+  res.redirect('/');
+});
+
+// Upload JSON report
+app.post('/report', upload.single('reportFile'), (req, res) => {
+  console.log(req.file);
+  const filePath = req.file.path;
+  fs.readFile(filePath, 'utf8', (err, report) => {
+    if (err) {
+      throw err;
+    }
+
+    const [headers, rows] = jsonToCsv(report);
+    res.send({ headers, rows, filePath});
+  });
+});
+
+// Handle CSV file downloads
 app.get(`/client/uploads/:filename`, (req, res) => {
   const readFilePath = path.join(__dirname, 'client', 'uploads', req.params.filename);
   fs.readFile(readFilePath, 'utf8', (err, report) => {
@@ -39,22 +58,6 @@ app.get(`/client/uploads/:filename`, (req, res) => {
     });
   });
 })
-
-app.get('/report', (req, res) => {
-  res.redirect('/');
-});
-
-app.post('/report', upload.single('reportFile'), (req, res) => {
-  const filePath = req.file.path;
-  fs.readFile(filePath, 'utf8', (err, report) => {
-    if (err) {
-      throw err;
-    }
-
-    const [headers, rows] = jsonToCsv(report);
-    res.send({ headers, rows, filePath});
-  });
-});
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));
 
