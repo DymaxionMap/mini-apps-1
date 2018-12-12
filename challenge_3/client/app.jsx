@@ -6,17 +6,52 @@ const Checkout = (props) => (
   <button onClick={props.checkoutClick}>Checkout</button>
 );
 
-const Form1 = (props) => (
-  <form>
-    <label htmlFor='name'>Name</label>
-    <input type='text' name='name'/>
-    <label htmlFor='email'>Email</label>
-    <input type='text' name='email'/>
-    <label htmlFor='password'>Password</label>
-    <input type='text' name='password'/>
-    <button onClick={props.form1Click}>Next</button>
-  </form>
-);
+class Form1 extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: '',
+      email: '',
+      password: '',
+    };
+
+    this.click = this.click.bind(this);
+  }
+
+  onChangeFactory(field) {
+    return (event) => {
+      this.setState({ [field]: event.target.value });
+    };
+  }
+
+  click() {
+    // event.preventDefault();
+    console.log('form1 was clicked');
+    console.log('Sending JSON:', JSON.stringify(this.state));
+    fetch('/form1', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+      },
+      body: JSON.stringify(this.state),
+    });
+    this.props.nextView('form2');
+  }
+
+  render() {
+    return (
+      <form>
+        <label htmlFor='name'>Name</label>
+        <input type='text' name='name' onChange={this.onChangeFactory('name')}/>
+        <label htmlFor='email'>Email</label>
+        <input type='text' name='email' onChange={this.onChangeFactory('email')}/>
+        <label htmlFor='password'>Password</label>
+        <input type='text' name='password' onChange={this.onChangeFactory('password')}/>
+        <button type='button' onClick={this.click}>Next</button>
+      </form>
+    );
+  }
+}
 
 const Form2 = (props) => (
   <form>
@@ -77,31 +112,20 @@ class App extends React.Component {
     }
 
     this.checkoutClick = this.checkoutClick.bind(this);
-    this.form1Click = this.form1Click.bind(this);
     this.form2Click = this.form2Click.bind(this);
     this.form3Click = this.form3Click.bind(this);
     this.confirmationClick = this.confirmationClick.bind(this);
+    this.nextView = this.nextView.bind(this);
+  }
+
+  nextView(view) {
+    this.setState({ currentView: view });
   }
 
   checkoutClick(event) {
     event.preventDefault();
     console.log('checkout was clicked');
     this.setState({ currentView: 'form1' });
-  }
-
-  form1Click(event) {
-    event.preventDefault();
-    console.log('form1 was clicked');
-    const data = {hello: 'world'};
-    console.log('Sending JSON:', JSON.stringify(data));
-    fetch('/form1', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-      },
-      body: JSON.stringify(data),
-    });
-    this.setState({ currentView: 'form2' });
   }
 
   form2Click(event) {
@@ -123,7 +147,7 @@ class App extends React.Component {
 
   render() {
     const checkout = <Checkout checkoutClick={this.checkoutClick}/>;
-    const form1 = <Form1 form1Click={this.form1Click}/>;
+    const form1 = <Form1 nextView={this.nextView}/>;
     const form2 = <Form2 form2Click={this.form2Click}/>;
     const form3 = <Form3 form3Click={this.form3Click}/>;
     const confirmation = <Confirmation confirmationClick={this.confirmationClick}/>;
