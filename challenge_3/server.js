@@ -8,6 +8,18 @@ const app = express();
 app.use(express.static('public'));
 app.use(bodyParser.json());
 
+app.post('/checkout', (req, res) => {
+  Checkout.create({}, (err, checkoutItem) => {
+    if (err) {
+      throw err;
+    }
+
+    console.log('Created checkoutItem with id:', checkoutItem._id);
+
+    res.json({ id: checkoutItem._id });
+  })
+});
+
 app.post('/form', (req, res) => {
   const formData = req.body;
   console.log('formData:', formData);

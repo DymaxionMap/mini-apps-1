@@ -37,7 +37,18 @@ class Checkout extends React.Component {
   }
 
   click() {
-    this.props.nextView('form1');
+    fetch('/checkout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+      },
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log('data:', data);
+      console.log('id:', data.id);
+      this.props.nextView('form1');
+    })
   }
 
   render() {
@@ -255,6 +266,7 @@ class App extends React.Component {
 
     this.state = {
       currentView: 'checkout',
+      databaseId: null,
     }
 
     this.nextView = this.nextView.bind(this);
