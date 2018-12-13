@@ -1,3 +1,15 @@
+// Util Functions
+const postFormData = (data, nextView, view) => (
+  fetch('/form', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+      },
+      body: JSON.stringify(data),
+    })
+    .then(() => nextView(view));
+);
+
 // Components
 const Nav = () => (
   <h1>Multistep Checkout Experience</h1>
@@ -33,14 +45,7 @@ class Form1 extends React.Component {
   click() {
     console.log('form1 was clicked');
     console.log('Sending JSON:', JSON.stringify(this.state));
-    fetch('/form', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-      },
-      body: JSON.stringify(this.state),
-    });
-    this.props.nextView('form2');
+    postFormData(this.state, this.props.nextView, 'form2');
   }
 
   render() {
