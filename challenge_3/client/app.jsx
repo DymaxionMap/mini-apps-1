@@ -163,25 +163,55 @@ class Form2 extends React.Component {
 class Form3 extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      creditcard: '',
+      expiry: '',
+      cvv: '',
+      billingzip: '',
+    };
 
     this.click = this.click.bind(this);
   }
 
+  onChangeFactory(field) {
+    return (event) => {
+      this.setState({ [field]: event.target.value });
+    };
+  }
+
   click() {
-    this.props.nextView('confirmation');
+    console.log('form3 was clicked');
+    console.log('Sending JSON:', JSON.stringify(this.state));
+    postFormData(this.state, this.props.nextView, 'confirmation');
   }
 
   render() {
+    const fields = [
+      {
+        name: 'creditcard',
+        label: 'Credit Card',
+        changeFactory: this.onChangeFactory.bind(this),
+      },
+      {
+        name: 'expiry',
+        label: 'Expiry Date',
+        changeFactory: this.onChangeFactory.bind(this),
+      },
+      {
+        name: 'cvv',
+        label: 'CVV',
+        changeFactory: this.onChangeFactory.bind(this),
+      },
+      {
+        name: 'billingzip',
+        label: 'Billing Zip Code',
+        changeFactory: this.onChangeFactory.bind(this),
+      },
+    ];
+    const fieldComponents = fields.map(field => <FieldFactory {...field} />);
     return (
       <form>
-        <label htmlFor='creditcard'>Credit Card Number</label>
-        <input type='text' name='creditcard'/>
-        <label htmlFor='expiry'>Expiry Date</label>
-        <input type='text' name='expiry'/>
-        <label htmlFor='cvv'>CVV</label>
-        <input type='text' name='cvv'/>
-        <label htmlFor='billingzip'>Billing Zip Code</label>
-        <input type='text' name='billingzip'/>
+        {fieldComponents}
         <button type='button' onClick={this.click}>Next</button>
       </form>
     );
