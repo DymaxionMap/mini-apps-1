@@ -15,9 +15,21 @@ const Nav = () => (
   <h1>Multistep Checkout Experience</h1>
 );
 
-const Checkout = (props) => (
-  <button onClick={props.checkoutClick}>Checkout</button>
-);
+class Checkout extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.click = this.click.bind(this);
+  }
+
+  click() {
+    this.props.nextView('form1');
+  }
+
+  render() {
+    return <button type='button' onClick={this.click}>Checkout</button>
+  }
+}
 
 const FieldFactory = ({name, label, changeFactory}) => (
   <div>
@@ -148,47 +160,58 @@ class Form2 extends React.Component {
   }
 }
 
-// const Form2 = (props) => (
-//   <form>
-//     <label htmlFor='addrLine1'>Address Line 1</label>
-//     <input type='text' name='addrLine1'/>
-//     <label htmlFor='addrLine2'>AddressLine2</label>
-//     <input type='text' name='addrLine2'/>
-//     <label htmlFor='city'>City</label>
-//     <input type='text' name='city'/>
-//     <label htmlFor='state'>State</label>
-//     <input type='text' name='state'/>
-//     <label htmlFor='zipcode'>Zip Code</label>
-//     <input type='text' name='zipcode'/>
-//     <label htmlFor='phone'>Phone Number</label>
-//     <input type='text' name='phone'/>
-//     <button onClick={props.form2Click}>Next</button>
-//   </form>
-// );
+class Form3 extends React.Component {
+  constructor(props) {
+    super(props);
 
-const Form3 = (props) => (
-  <form>
-    <label htmlFor='creditcard'>Credit Card Number</label>
-    <input type='text' name='creditcard'/>
-    <label htmlFor='expiry'>Expiry Date</label>
-    <input type='text' name='expiry'/>
-    <label htmlFor='cvv'>CVV</label>
-    <input type='text' name='cvv'/>
-    <label htmlFor='billingzip'>Billing Zip Code</label>
-    <input type='text' name='billingzip'/>
-    <button onClick={props.form3Click}>Next</button>
-  </form>
-);
+    this.click = this.click.bind(this);
+  }
 
-const Confirmation = (props) => (
-  <div>
-    <table>
-      <tbody>
-      </tbody>
-    </table>
-    <button onClick={props.confirmationClick}>Purchase</button>
-  </div>
-);
+  click() {
+    this.props.nextView('confirmation');
+  }
+
+  render() {
+    return (
+      <form>
+        <label htmlFor='creditcard'>Credit Card Number</label>
+        <input type='text' name='creditcard'/>
+        <label htmlFor='expiry'>Expiry Date</label>
+        <input type='text' name='expiry'/>
+        <label htmlFor='cvv'>CVV</label>
+        <input type='text' name='cvv'/>
+        <label htmlFor='billingzip'>Billing Zip Code</label>
+        <input type='text' name='billingzip'/>
+        <button type='button' onClick={this.click}>Next</button>
+      </form>
+    );
+  }
+}
+
+class Confirmation extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.click = this.click.bind(this);
+  }
+
+  click() {
+    this.props.nextView('checkout');
+  }
+
+  render() {
+    return (
+      <div>
+        <table>
+          <tbody>
+          </tbody>
+        </table>
+        <button type='button' onClick={this.click}>Purchase</button>
+      </div>
+    );
+  }
+}
+
 
 const tableRow = (props) => (
   <tr>
@@ -197,19 +220,14 @@ const tableRow = (props) => (
   </tr>
 );
 
-// Temporarily show all the forms for development
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      currentView: 'form1',
+      currentView: 'checkout',
     }
 
-    this.checkoutClick = this.checkoutClick.bind(this);
-    this.form2Click = this.form2Click.bind(this);
-    this.form3Click = this.form3Click.bind(this);
-    this.confirmationClick = this.confirmationClick.bind(this);
     this.nextView = this.nextView.bind(this);
   }
 
@@ -217,35 +235,12 @@ class App extends React.Component {
     this.setState({ currentView: view });
   }
 
-  checkoutClick(event) {
-    event.preventDefault();
-    console.log('checkout was clicked');
-    this.setState({ currentView: 'form1' });
-  }
-
-  form2Click(event) {
-    event.preventDefault();
-    console.log('form2 was clicked');
-    this.setState({ currentView: 'form3' });
-  }
-
-  form3Click(event) {
-    event.preventDefault();
-    console.log('form3 was clicked');
-    this.setState({ currentView: 'confirmation' });
-  }
-
-  confirmationClick(event) {
-    event.preventDefault();
-    console.log('confirmation was clicked');
-  }
-
   render() {
-    const checkout = <Checkout checkoutClick={this.checkoutClick}/>;
+    const checkout = <Checkout nextView={this.nextView}/>;
     const form1 = <Form1 nextView={this.nextView}/>;
     const form2 = <Form2 nextView={this.nextView}/>;
-    const form3 = <Form3 form3Click={this.form3Click}/>;
-    const confirmation = <Confirmation confirmationClick={this.confirmationClick}/>;
+    const form3 = <Form3 nextView={this.nextView}/>;
+    const confirmation = <Confirmation nextView={this.nextView}/>;
     const views = {
       checkout,
       form1,
