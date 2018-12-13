@@ -44,9 +44,9 @@ class Checkout extends React.Component {
       },
     })
     .then(res => res.json())
-    .then(data => {
-      console.log('data:', data);
-      console.log('id:', data.id);
+    .then(({ id }) => {
+      console.log('id:', id);
+      this.props.setDatabaseId(id);
       this.props.nextView('form1');
     })
   }
@@ -77,7 +77,8 @@ class Form1 extends React.Component {
   click() {
     console.log('form1 was clicked');
     console.log('Sending JSON:', JSON.stringify(this.state));
-    postFormData(this.state, this.props.nextView, 'form2');
+    const data = { databaseId: this.props.databaseId, ...this.state };
+    postFormData(data, this.props.nextView, 'form2');
   }
 
   render() {
@@ -132,7 +133,8 @@ class Form2 extends React.Component {
   click() {
     console.log('form2 was clicked');
     console.log('Sending JSON:', JSON.stringify(this.state));
-    postFormData(this.state, this.props.nextView, 'form3');
+    const data = { databaseId: this.props.databaseId, ...this.state };
+    postFormData(data, this.props.nextView, 'form3');
   }
 
   render() {
@@ -200,7 +202,8 @@ class Form3 extends React.Component {
   click() {
     console.log('form3 was clicked');
     console.log('Sending JSON:', JSON.stringify(this.state));
-    postFormData(this.state, this.props.nextView, 'confirmation');
+    const data = { databaseId: this.props.databaseId, ...this.state };
+    postFormData(data, this.props.nextView, 'confirmation');
   }
 
   render() {
@@ -270,18 +273,23 @@ class App extends React.Component {
     }
 
     this.nextView = this.nextView.bind(this);
+    this.setDatabaseId = this.setDatabaseId.bind(this);
   }
 
   nextView(view) {
     this.setState({ currentView: view });
   }
 
+  setDatabaseId(id) {
+    this.setState({ databaseId: id });
+  }
+
   render() {
-    const checkout = <Checkout nextView={this.nextView}/>;
-    const form1 = <Form1 nextView={this.nextView}/>;
-    const form2 = <Form2 nextView={this.nextView}/>;
-    const form3 = <Form3 nextView={this.nextView}/>;
-    const confirmation = <Confirmation nextView={this.nextView}/>;
+    const checkout = <Checkout nextView={this.nextView} setDatabaseId={this.setDatabaseId}/>;
+    const form1 = <Form1 nextView={this.nextView} databaseId={this.state.databaseId}/>;
+    const form2 = <Form2 nextView={this.nextView} databaseId={this.state.databaseId}/>;
+    const form3 = <Form3 nextView={this.nextView} databaseId={this.state.databaseId}/>;
+    const confirmation = <Confirmation nextView={this.nextView} databaseId={this.state.databaseId}/>;
     const views = {
       checkout,
       form1,
