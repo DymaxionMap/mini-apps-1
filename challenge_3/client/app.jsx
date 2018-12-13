@@ -1,4 +1,4 @@
-// Util Functions
+// Util Functions and Components
 const postFormData = (data, nextView, view) => {
   fetch('/form', {
       method: 'POST',
@@ -10,11 +10,25 @@ const postFormData = (data, nextView, view) => {
     .then(() => nextView(view))
 };
 
-// Components
+const FieldFactory = ({name, label, changeFactory}) => (
+  <div>
+    <label htmlFor={name}>{label}</label>
+    <input type='text' name={name} onChange={changeFactory(name)}/>
+  </div>
+);
+
+const tableRow = (props) => (
+  <tr>
+    <td></td>
+    <td></td>
+  </tr>
+);
+
 const Nav = () => (
   <h1>Multistep Checkout Experience</h1>
 );
 
+// View Components
 class Checkout extends React.Component {
   constructor(props) {
     super(props);
@@ -30,13 +44,6 @@ class Checkout extends React.Component {
     return <button type='button' onClick={this.click}>Checkout</button>
   }
 }
-
-const FieldFactory = ({name, label, changeFactory}) => (
-  <div>
-    <label htmlFor={name}>{label}</label>
-    <input type='text' name={name} onChange={changeFactory(name)}/>
-  </div>
-);
 
 class Form1 extends React.Component {
   constructor(props) {
@@ -241,14 +248,6 @@ class Confirmation extends React.Component {
     );
   }
 }
-
-
-const tableRow = (props) => (
-  <tr>
-    <td></td>
-    <td></td>
-  </tr>
-);
 
 class App extends React.Component {
   constructor(props) {
