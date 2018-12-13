@@ -8,12 +8,24 @@ const app = express();
 app.use(express.static('public'));
 app.use(bodyParser.json());
 
-const formData = {};
-
 app.post('/form', (req, res) => {
-  Object.assign(formData, req.body);
+  const formData = req.body;
   console.log('formData:', formData);
-  res.sendStatus(200);
+  Checkout.create(formData, (err) => {
+    if (err) {
+      throw err;
+    }
+
+    // Find and log data for testing purposes
+    Checkout.find({ name: formData.name }, (err, items) => {
+      if (err) {
+        throw err;
+      }
+
+      items.forEach(item => console.log(item.email));
+      res.sendStatus(200);
+    });
+  });
 });
 
 app.listen(PORT, () => {
