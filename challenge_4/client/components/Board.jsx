@@ -1,6 +1,5 @@
 import React from 'react';
 import Row from './Row.jsx';
-// import Square from './Square.jsx';
 
 class Board extends React.Component {
   constructor(props) {
@@ -8,7 +7,7 @@ class Board extends React.Component {
   }
 
   generateRows(board) {
-    return board.map(row => <Row />);
+    return board.map(row => <Row row={row}/>);
   }
 
   render() {
