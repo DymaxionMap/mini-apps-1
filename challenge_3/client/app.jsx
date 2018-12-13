@@ -74,97 +74,97 @@ class Form1 extends React.Component {
         {fieldComponents}
         <button type='button' onClick={this.click}>Next</button>
       </form>
-
     );
   }
 }
 
-// class Form2 extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       addrLine1: '',
-//       addrLine2: '',
-//       city: '',
-//       state: '',
-//       zipcode: '',
-//       phone: '',
-//     };
+class Form2 extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      addrLine1: '',
+      addrLine2: '',
+      city: '',
+      state: '',
+      zipcode: '',
+      phone: '',
+    };
 
-//     this.click = this.click.bind(this);
-//   }
+    this.click = this.click.bind(this);
+  }
 
-//   onChangeFactory(field) {
-//     return (event) => {
-//       this.setState({ [field]: event.target.value });
-//     };
-//   }
+  onChangeFactory(field) {
+    return (event) => {
+      this.setState({ [field]: event.target.value });
+    };
+  }
 
-//   click() {
-//     console.log('form2 was clicked');
-//     console.log('Sending JSON:', JSON.stringify(this.state));
-//     postFormData(this.state, this.props.nextView, 'form3');
-//   }
+  click() {
+    console.log('form2 was clicked');
+    console.log('Sending JSON:', JSON.stringify(this.state));
+    postFormData(this.state, this.props.nextView, 'form3');
+  }
 
-//   render() {
-//     fields = [
-//       {
-//         name: 'addrLine1',
-//         label: 'Address Line 1',
-//         changeHandler: this.onChangeFactory,
-//       },
-//       {
-//         name: 'addrLine2',
-//         label: 'Address Line 2',
-//         changeHandler: this.onChangeFactory,
-//       },
-//       {
-//         name: 'city',
-//         label: 'City',
-//         changeHandler: this.onChangeFactory,
-//       },
-//       {
-//         name: 'state',
-//         label: 'State',
-//         changeHandler: this.onChangeFactory,
-//       },
-//       {
-//         name: 'zipcode',
-//         label: 'Zip Code',
-//         changeHandler: this.onChangeFactory,
-//       },
-//       {
-//         name: 'phone',
-//         label: 'Phone Number',
-//         changeHandler: this.onChangeFactory,
-//       },
-//     ];
-//     const fieldComponents = fields.map(field => <FieldFactory {...field} />);
-//     return (
-//       <form>
-//         {fieldComponents}
-//       </form>
-//     );
-//   }
-// }
+  render() {
+    const fields = [
+      {
+        name: 'addrLine1',
+        label: 'Address Line 1',
+        changeFactory: this.onChangeFactory.bind(this),
+      },
+      {
+        name: 'addrLine2',
+        label: 'Address Line 2',
+        changeFactory: this.onChangeFactory.bind(this),
+      },
+      {
+        name: 'city',
+        label: 'City',
+        changeFactory: this.onChangeFactory.bind(this),
+      },
+      {
+        name: 'state',
+        label: 'State',
+        changeFactory: this.onChangeFactory.bind(this),
+      },
+      {
+        name: 'zipcode',
+        label: 'Zip Code',
+        changeFactory: this.onChangeFactory.bind(this),
+      },
+      {
+        name: 'phone',
+        label: 'Phone Number',
+        changeFactory: this.onChangeFactory.bind(this),
+      },
+    ];
+    const fieldComponents = fields.map(field => <FieldFactory {...field} />);
+    return (
+      <form>
+        {fieldComponents}
+        <button type='button' onClick={this.click}>Next</button>
+      </form>
+    );
+  }
+}
 
-const Form2 = (props) => (
-  <form>
-    <label htmlFor='addrLine1'>Address Line 1</label>
-    <input type='text' name='addrLine1'/>
-    <label htmlFor='addrLine2'>AddressLine2</label>
-    <input type='text' name='addrLine2'/>
-    <label htmlFor='city'>City</label>
-    <input type='text' name='city'/>
-    <label htmlFor='state'>State</label>
-    <input type='text' name='state'/>
-    <label htmlFor='zipcode'>Zip Code</label>
-    <input type='text' name='zipcode'/>
-    <label htmlFor='phone'>Phone Number</label>
-    <input type='text' name='phone'/>
-    <button onClick={props.form2Click}>Next</button>
-  </form>
-);
+// const Form2 = (props) => (
+//   <form>
+//     <label htmlFor='addrLine1'>Address Line 1</label>
+//     <input type='text' name='addrLine1'/>
+//     <label htmlFor='addrLine2'>AddressLine2</label>
+//     <input type='text' name='addrLine2'/>
+//     <label htmlFor='city'>City</label>
+//     <input type='text' name='city'/>
+//     <label htmlFor='state'>State</label>
+//     <input type='text' name='state'/>
+//     <label htmlFor='zipcode'>Zip Code</label>
+//     <input type='text' name='zipcode'/>
+//     <label htmlFor='phone'>Phone Number</label>
+//     <input type='text' name='phone'/>
+//     <button onClick={props.form2Click}>Next</button>
+//   </form>
+// );
 
 const Form3 = (props) => (
   <form>
@@ -243,7 +243,7 @@ class App extends React.Component {
   render() {
     const checkout = <Checkout checkoutClick={this.checkoutClick}/>;
     const form1 = <Form1 nextView={this.nextView}/>;
-    const form2 = <Form2 form2Click={this.form2Click}/>;
+    const form2 = <Form2 nextView={this.nextView}/>;
     const form3 = <Form3 form3Click={this.form3Click}/>;
     const confirmation = <Confirmation confirmationClick={this.confirmationClick}/>;
     const views = {
