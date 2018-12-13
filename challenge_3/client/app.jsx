@@ -1,5 +1,5 @@
 // Util Functions
-const postFormData = (data, nextView, view) => (
+const postFormData = (data, nextView, view) => {
   fetch('/form', {
       method: 'POST',
       headers: {
@@ -7,8 +7,8 @@ const postFormData = (data, nextView, view) => (
       },
       body: JSON.stringify(data),
     })
-    .then(() => nextView(view));
-);
+    .then(() => nextView(view))
+};
 
 // Components
 const Nav = () => (
@@ -20,8 +20,10 @@ const Checkout = (props) => (
 );
 
 const FieldFactory = ({name, label, changeFactory}) => (
-  <label htmlFor={name}>{label}</label>
-  <input type='text' name={name} onChange={changeFactory(name)}/>
+  <div>
+    <label htmlFor={name}>{label}</label>
+    <input type='text' name={name} onChange={changeFactory(name)}/>
+  </div>
 );
 
 class Form1 extends React.Component {
@@ -49,31 +51,102 @@ class Form1 extends React.Component {
   }
 
   render() {
-    fields = [
+    const fields = [
       {
         name: 'name',
         label: 'Name',
-        changeHandler: this.onChangeFactory,
+        changeFactory: this.onChangeFactory.bind(this),
       },
       {
         name: 'email',
         label: 'Email',
-        changeHandler: this.onChangeFactory,
+        changeFactory: this.onChangeFactory.bind(this),
       },
       {
         name: 'password',
         label: 'Password',
-        changeHandler: this.onChangeFactory,
+        changeFactory: this.onChangeFactory.bind(this),
       },
     ];
     const fieldComponents = fields.map(field => <FieldFactory {...field} />);
     return (
       <form>
         {fieldComponents}
+        <button type='button' onClick={this.click}>Next</button>
       </form>
+
     );
   }
 }
+
+// class Form2 extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       addrLine1: '',
+//       addrLine2: '',
+//       city: '',
+//       state: '',
+//       zipcode: '',
+//       phone: '',
+//     };
+
+//     this.click = this.click.bind(this);
+//   }
+
+//   onChangeFactory(field) {
+//     return (event) => {
+//       this.setState({ [field]: event.target.value });
+//     };
+//   }
+
+//   click() {
+//     console.log('form2 was clicked');
+//     console.log('Sending JSON:', JSON.stringify(this.state));
+//     postFormData(this.state, this.props.nextView, 'form3');
+//   }
+
+//   render() {
+//     fields = [
+//       {
+//         name: 'addrLine1',
+//         label: 'Address Line 1',
+//         changeHandler: this.onChangeFactory,
+//       },
+//       {
+//         name: 'addrLine2',
+//         label: 'Address Line 2',
+//         changeHandler: this.onChangeFactory,
+//       },
+//       {
+//         name: 'city',
+//         label: 'City',
+//         changeHandler: this.onChangeFactory,
+//       },
+//       {
+//         name: 'state',
+//         label: 'State',
+//         changeHandler: this.onChangeFactory,
+//       },
+//       {
+//         name: 'zipcode',
+//         label: 'Zip Code',
+//         changeHandler: this.onChangeFactory,
+//       },
+//       {
+//         name: 'phone',
+//         label: 'Phone Number',
+//         changeHandler: this.onChangeFactory,
+//       },
+//     ];
+//     const fieldComponents = fields.map(field => <FieldFactory {...field} />);
+//     return (
+//       <form>
+//         {fieldComponents}
+//       </form>
+//     );
+//   }
+// }
 
 const Form2 = (props) => (
   <form>
