@@ -246,6 +246,14 @@ class Confirmation extends React.Component {
     this.click = this.click.bind(this);
   }
 
+  componentDidMount() {
+    const url = `/confirmation?databaseId=${this.props.databaseId}`;
+    console.log('url:', url);
+    fetch(url)
+    .then(res => res.json())
+    .then(data => console.log('confirmation data:', data));
+  }
+
   click() {
     this.props.nextView('checkout');
   }

@@ -7,6 +7,7 @@ const app = express();
 
 app.use(express.static('public'));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/checkout', (req, res) => {
   Checkout.create({}, (err, checkoutItem) => {
@@ -21,7 +22,7 @@ app.post('/checkout', (req, res) => {
 });
 
 app.post('/form', (req, res) => {
-  const {databaseId, ...formData} = req.body;
+  const { databaseId, ...formData } = req.body;
   console.log('id:', databaseId);
   console.log('formData:', formData);
 
@@ -32,6 +33,13 @@ app.post('/form', (req, res) => {
 
     res.sendStatus(200);
   });
+});
+
+app.get('/confirmation', (req, res) => {
+  const databaseId = req.query.databaseId;
+  console.log('req.query:', req.query);
+  console.log('conf id:', databaseId);
+  res.sendStatus(200);
 });
 
 app.listen(PORT, () => {
