@@ -7,8 +7,11 @@ const app = express();
 app.use(express.static('public'));
 app.use(bodyParser.json());
 
-app.post('/form1', (req, res) => {
-  console.log(req.body);
+const formData = {};
+
+app.post('/form', (req, res) => {
+  Object.assign(formData, req.body);
+  console.log('formData:', formData);
   res.sendStatus(200);
 });
 

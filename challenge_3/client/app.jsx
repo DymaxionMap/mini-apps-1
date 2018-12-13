@@ -1,9 +1,15 @@
+// Components
 const Nav = () => (
   <h1>Multistep Checkout Experience</h1>
 );
 
 const Checkout = (props) => (
   <button onClick={props.checkoutClick}>Checkout</button>
+);
+
+const FieldFactory = ({name, label, changeFactory}) => (
+  <label htmlFor={name}>{label}</label>
+  <input type='text' name={name} onChange={changeFactory(name)}/>
 );
 
 class Form1 extends React.Component {
@@ -25,10 +31,9 @@ class Form1 extends React.Component {
   }
 
   click() {
-    // event.preventDefault();
     console.log('form1 was clicked');
     console.log('Sending JSON:', JSON.stringify(this.state));
-    fetch('/form1', {
+    fetch('/form', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
@@ -39,15 +44,27 @@ class Form1 extends React.Component {
   }
 
   render() {
+    fields = [
+      {
+        name: 'name',
+        label: 'Name',
+        changeHandler: this.onChangeFactory,
+      },
+      {
+        name: 'email',
+        label: 'Email',
+        changeHandler: this.onChangeFactory,
+      },
+      {
+        name: 'password',
+        label: 'Password',
+        changeHandler: this.onChangeFactory,
+      },
+    ];
+    const fieldComponents = fields.map(field => <FieldFactory {...field} />);
     return (
       <form>
-        <label htmlFor='name'>Name</label>
-        <input type='text' name='name' onChange={this.onChangeFactory('name')}/>
-        <label htmlFor='email'>Email</label>
-        <input type='text' name='email' onChange={this.onChangeFactory('email')}/>
-        <label htmlFor='password'>Password</label>
-        <input type='text' name='password' onChange={this.onChangeFactory('password')}/>
-        <button type='button' onClick={this.click}>Next</button>
+        {fieldComponents}
       </form>
     );
   }
