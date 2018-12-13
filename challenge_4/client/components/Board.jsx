@@ -7,7 +7,7 @@ class Board extends React.Component {
   }
 
   generateRows(board) {
-    return board.map(row => <Row row={row}/>);
+    return board.map((row, rowIndex) => <Row row={row} rowIndex={rowIndex} />);
   }
 
   render() {
