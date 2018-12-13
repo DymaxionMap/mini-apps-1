@@ -37,9 +37,15 @@ app.post('/form', (req, res) => {
 
 app.get('/confirmation', (req, res) => {
   const databaseId = req.query.databaseId;
-  console.log('req.query:', req.query);
   console.log('conf id:', databaseId);
-  res.sendStatus(200);
+  Checkout.findOne({ _id: databaseId }, (err, checkoutItem) => {
+    if (err) {
+      throw err;
+    }
+
+    console.log('checkoutItem:', checkoutItem);
+    res.json(checkoutItem);
+  });
 });
 
 app.listen(PORT, () => {

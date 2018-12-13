@@ -17,10 +17,10 @@ const FieldFactory = ({name, label, changeFactory}) => (
   </div>
 );
 
-const tableRow = (props) => (
+const TableRow = ({ field, value }) => (
   <tr>
-    <td></td>
-    <td></td>
+    <td>{field}:</td>
+    <td>{value}</td>
   </tr>
 );
 
@@ -243,6 +243,10 @@ class Confirmation extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      confirmationData: null,
+    };
+
     this.click = this.click.bind(this);
   }
 
@@ -251,18 +255,31 @@ class Confirmation extends React.Component {
     console.log('url:', url);
     fetch(url)
     .then(res => res.json())
-    .then(data => console.log('confirmation data:', data));
+    .then(data => {
+      console.log('conf data:', data);
+      this.setState({ confirmationData: data })
+    });
   }
 
   click() {
+    this.props.setDatabaseId(null);
     this.props.nextView('checkout');
   }
 
   render() {
+    let rows;
+    if (this.state.confirmationData) {
+      const data = this.state.confirmationData;
+      console.log('render conf data: ', data);
+      const fields = Object.keys(data);
+      rows = fields.filter(field => !field.startsWith('_'))
+        .map(field => <TableRow field={field} value={data[field]}/>);
+    }
     return (
       <div>
         <table>
           <tbody>
+            {rows ? rows : <tr></tr>}
           </tbody>
         </table>
         <button type='button' onClick={this.click}>Purchase</button>
@@ -297,7 +314,7 @@ class App extends React.Component {
     const form1 = <Form1 nextView={this.nextView} databaseId={this.state.databaseId}/>;
     const form2 = <Form2 nextView={this.nextView} databaseId={this.state.databaseId}/>;
     const form3 = <Form3 nextView={this.nextView} databaseId={this.state.databaseId}/>;
-    const confirmation = <Confirmation nextView={this.nextView} databaseId={this.state.databaseId}/>;
+    const confirmation = <Confirmation nextView={this.nextView} databaseId={this.state.databaseId} setDatabaseId={this.setDatabaseId}/>;
     const views = {
       checkout,
       form1,
