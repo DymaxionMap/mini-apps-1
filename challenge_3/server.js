@@ -21,23 +21,17 @@ app.post('/checkout', (req, res) => {
 });
 
 app.post('/form', (req, res) => {
-  const formData = req.body;
+  const {databaseId, ...formData} = req.body;
+  console.log('id:', databaseId);
   console.log('formData:', formData);
-  // Checkout.create(formData, (err) => {
-  //   if (err) {
-  //     throw err;
-  //   }
 
-  //   // Find and log data for testing purposes
-  //   Checkout.find({ name: formData.name }, (err, items) => {
-  //     if (err) {
-  //       throw err;
-  //     }
+  Checkout.updateOne({ _id: databaseId }, formData, (err) => {
+    if (err) {
+      throw err;
+    }
 
-  //     items.forEach(item => console.log(item.email));
-  //     res.sendStatus(200);
-  //   });
-  // });
+    res.sendStatus(200);
+  });
 });
 
 app.listen(PORT, () => {
