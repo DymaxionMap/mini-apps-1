@@ -72,10 +72,19 @@ class App extends React.Component {
   }
 
   winVertical(updatedBoard, currentPlayer, rowIndex, colIndex) {  
-    const count = updatedBoard.reduce((count, row) => {
-      return (row[colIndex] === currentPlayer) ? count + 1 : 0;
-    }, 0);
-    return count >= this.WINNING_COUNT;
+    let count = 0;
+    for (let i = 0; i < this.NUM_ROWS; i++) {
+      if (updatedBoard[i][colIndex] === currentPlayer) {
+        count += 1;
+        if (count >= this.WINNING_COUNT) {
+          return true;
+        }
+      } else {
+        count = 0;
+      }
+    }
+
+    return false;
   }
 
   winMajorDiagonal(updatedBoard, currentPlayer, rowIndex, colIndex) {

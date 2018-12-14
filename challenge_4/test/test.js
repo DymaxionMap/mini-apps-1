@@ -25,10 +25,19 @@ const fakeApp = {
   },
 
   winVertical: function (updatedBoard, currentPlayer, rowIndex, colIndex) {  
-    const count = updatedBoard.reduce((count, row) => {
-      return (row[colIndex] === currentPlayer) ? count + 1 : 0;
-    }, 0);
-    return count >= this.WINNING_COUNT;
+    let count = 0;
+    for (let i = 0; i < this.NUM_ROWS; i++) {
+      if (updatedBoard[i][colIndex] === currentPlayer) {
+        count += 1;
+        if (count >= this.WINNING_COUNT) {
+          return true;
+        }
+      } else {
+        count = 0;
+      }
+    }
+
+    return false;
   },
 
   winMajorDiagonal: function (updatedBoard, currentPlayer, rowIndex, colIndex) {
@@ -83,5 +92,15 @@ describe('Connect Four', function() {
     board[rowIndex][3] = currentPlayer;
     const winHorizontal = fakeApp.winHorizontal(board, currentPlayer, rowIndex, 3);
     expect(winHorizontal).to.be.true;
+  });
+
+  it('should declare winner if four in a column vertically', function() {
+    let rowIndex = fakeApp.NUM_ROWS - 1;
+    board[rowIndex - 3][0] = currentPlayer;
+    board[rowIndex - 2][0] = currentPlayer;
+    board[rowIndex - 1][0] = currentPlayer;
+    board[rowIndex][0] = currentPlayer;
+    const winVertical = fakeApp.winVertical(board, currentPlayer, rowIndex - 3, 0);
+    expect(winVertical).to.be.true;
   });
 });
