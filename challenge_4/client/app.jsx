@@ -29,7 +29,7 @@ class App extends React.Component {
     });
   }
 
-  makeUpdatedBoard(rowIndex, colIndex, player) {
+  generateUpdatedBoard(rowIndex, colIndex, player) {
     const updatedBoard = [];
     for (let i = 0; i < this.SIZE; i++) {
       updatedBoard.push([]);
@@ -46,16 +46,18 @@ class App extends React.Component {
   }
 
   updateBoard(rowIndex, colIndex, player) {
-    const updatedBoard = this.makeUpdatedBoard(rowIndex, colIndex, player);
+    const updatedBoard = this.generateUpdatedBoard(rowIndex, colIndex, player);
     this.setState({
       board: updatedBoard
     });
   }
 
-  squareClick(rowIndex, colIndex) {
+  squareClick(rowIndex, colIndex, piece) {
     console.log(`Square (${rowIndex}, ${colIndex}) was clicked`);
-    this.updateBoard(rowIndex, colIndex, this.state.currentPlayer);
-    this.updateCurrentPlayer();
+    if (!piece) {
+      this.updateBoard(rowIndex, colIndex, this.state.currentPlayer);
+      this.updateCurrentPlayer();
+    }
   }
 
   render() {
