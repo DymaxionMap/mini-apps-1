@@ -44,17 +44,22 @@ class App extends React.Component {
   }
 
   updateBoard(rowIndex, colIndex, player) {
+    const updatedBoard = this.generateUpdatedBoard(rowIndex, colIndex, player);
     this.setState({
-      board: this.generateUpdatedBoard(rowIndex, colIndex, player)
+      board: updatedBoard
     });
+    return updatedBoard;
+  }
+
+  isRowComplete(updatedBoard, currentPlayer, rowIndex, colIndex) {
+    return updatedBoard[rowIndex].every(piece => piece === currentPlayer);
   }
 
   squareClick(rowIndex, colIndex, piece) {
-    console.log(`Square (${rowIndex}, ${colIndex}) was clicked`);
     if (!piece) {
-      console.log('Dropped Row Index', this.dropPiece(rowIndex, colIndex));
       const droppedRowIndex = this.dropPiece(rowIndex, colIndex);
-      this.updateBoard(droppedRowIndex, colIndex, this.state.currentPlayer);
+      const updatedBoard = this.updateBoard(droppedRowIndex, colIndex, this.state.currentPlayer);
+      const rowComplete = this.isRowComplete(updatedBoard, this.state.currentPlayer, droppedRowIndex, colIndex);
       this.updateCurrentPlayer();
     }
   }
