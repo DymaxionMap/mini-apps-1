@@ -103,4 +103,14 @@ describe('Connect Four', function() {
     const winVertical = fakeApp.winVertical(board, currentPlayer, rowIndex - 3, 0);
     expect(winVertical).to.be.true;
   });
+
+  it('should declare winner if four in a diagonal', function() {
+    let rowIndex = fakeApp.NUM_ROWS - 1;
+    board[rowIndex - 3][3] = currentPlayer;
+    board[rowIndex - 2][2] = currentPlayer;
+    board[rowIndex - 1][1] = currentPlayer;
+    board[rowIndex][0] = currentPlayer;
+    const winDiagonal = fakeApp.winDiagonal(board, currentPlayer, rowIndex - 3, 3);
+    expect(winDiagonal).to.be.true;
+  });
 });

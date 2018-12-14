@@ -92,12 +92,20 @@ class App extends React.Component {
     let i = rowIndex;
     let j = colIndex;
     while (i < this.NUM_ROWS && j < this.NUM_COLS) {
-      count = (updatedBoard[i][j] === currentPlayer) ? count + 1 : 0;
+      if (updatedBoard[i][j] === currentPlayer) {
+        count += 1;
+        if (count >= this.WINNING_COUNT) {
+          return true;
+        }
+      } else {
+        count = 0
+      }
+
       i += 1;
       j += 1;
     }
 
-    return count >= this.WINNING_COUNT;
+    return false;
   }
 
   winMinorDiagonal(updatedBoard, currentPlayer, rowIndex, colIndex) {
@@ -105,12 +113,20 @@ class App extends React.Component {
     let i = rowIndex;
     let j = colIndex;
     while (i < this.NUM_ROWS && j >= 0) {
-      count = (updatedBoard[i][j] === currentPlayer) ? count + 1 : 0;
+      if (updatedBoard[i][j] === currentPlayer) {
+        count += 1;
+        if (count >= this.WINNING_COUNT) {
+          return true;
+        }
+      } else {
+        count = 0
+      }
+
       i += 1;
       j -= 1;
     }
 
-    return count >= this.WINNING_COUNT;
+    return false;
   }
 
   winDiagonal(updatedBoard, currentPlayer, rowIndex, colIndex) {
