@@ -27,18 +27,8 @@ class App extends React.Component {
   }
 
   generateUpdatedBoard(rowIndex, colIndex, player) {
-    const updatedBoard = [];
-    for (let i = 0; i < this.SIZE; i++) {
-      updatedBoard.push([]);
-      for (let j = 0; j < this.SIZE; j++) {
-        if (i === rowIndex && j === colIndex) {
-          updatedBoard[i].push(player);
-        } else {
-          updatedBoard[i].push(this.state.board[i][j]);
-        }
-      }
-    }
-
+    const updatedBoard = this.state.board.map(row => row.slice());
+    updatedBoard[rowIndex][colIndex] = player;
     return updatedBoard;
   }
 
