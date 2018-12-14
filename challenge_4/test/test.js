@@ -71,6 +71,10 @@ const fakeApp = {
     const winMinorDiagonal = this.winMinorDiagonal(updatedBoard, currentPlayer, rowIndex, colIndex);
     return winMajorDiagonal || winMinorDiagonal;
   },
+
+  isTied: function (updatedBoard) {
+    return updatedBoard.every(row => row.every(Boolean));
+  },
 };
 
 describe('Connect Four', function() {
@@ -112,5 +116,11 @@ describe('Connect Four', function() {
     board[rowIndex][0] = currentPlayer;
     const winDiagonal = fakeApp.winDiagonal(board, currentPlayer, rowIndex - 3, 3);
     expect(winDiagonal).to.be.true;
+  });
+
+  it('should declare a tie if all squares are occupied', function () {
+    board.forEach(row => row.fill(currentPlayer));
+    const isTied = fakeApp.isTied(board);
+    expect(isTied).to.be.true;
   });
 });
