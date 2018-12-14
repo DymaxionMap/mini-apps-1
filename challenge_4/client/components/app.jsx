@@ -44,9 +44,8 @@ class App extends React.Component {
   }
 
   updateBoard(rowIndex, colIndex, player) {
-    const updatedBoard = this.generateUpdatedBoard(rowIndex, colIndex, player);
     this.setState({
-      board: updatedBoard
+      board: this.generateUpdatedBoard(rowIndex, colIndex, player)
     });
   }
 
