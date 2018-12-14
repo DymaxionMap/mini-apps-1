@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/app.jsx';
 
-const SIZE = 4;
+const NUM_ROWS = 6;
+const NUM_COLS = 7;
 
-ReactDOM.render(<App SIZE={SIZE} />, document.getElementById('root'));
+ReactDOM.render(<App NUM_ROWS={NUM_ROWS} NUM_COLS={NUM_COLS} />, document.getElementById('root'));

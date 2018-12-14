@@ -5,11 +5,13 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.SIZE = props.SIZE;
+    this.NUM_ROWS = props.NUM_ROWS;
+    this.NUM_COLS = props.NUM_COLS;
     this.RED = 'RED';
     this.BLACK = 'BLACK';
 
-    const rows = [...Array(props.SIZE)].fill(null);
-    const board = rows.map(() => [...Array(props.SIZE)].fill(null));
+    const rows = [...Array(props.NUM_ROWS)].fill(null);
+    const board = rows.map(() => [...Array(props.NUM_COLS)].fill(null));
 
     this.state = {
       board,
@@ -66,10 +68,10 @@ class App extends React.Component {
   squareClick(rowIndex, colIndex, piece) {
     if (!piece) {
       const currentPlayer = this.state.currentPlayer;
-      const droppedRowIndex = this.dropPiece(rowIndex, colIndex);
-      const updatedBoard = this.updateBoard(droppedRowIndex, colIndex, currentPlayer);
-      const rowComplete = this.isRowComplete(updatedBoard, currentPlayer, droppedRowIndex, colIndex);
-      const colComplete = this.isColComplete(updatedBoard, currentPlayer, droppedRowIndex, colIndex);
+      // const droppedRowIndex = this.dropPiece(rowIndex, colIndex);
+      // const updatedBoard = this.updateBoard(droppedRowIndex, colIndex, currentPlayer);
+      // const rowComplete = this.isRowComplete(updatedBoard, currentPlayer, droppedRowIndex, colIndex);
+      // const colComplete = this.isColComplete(updatedBoard, currentPlayer, droppedRowIndex, colIndex);
       this.updateCurrentPlayer();
     }
   }
@@ -78,7 +80,7 @@ class App extends React.Component {
     return (
       <div>
         <h1>Connect Four</h1>
-        <Board board={this.state.board} SIZE={this.SIZE} squareClick={this.squareClick}/>
+        <Board board={this.state.board} squareClick={this.squareClick}/>
       </div>
     );
   }
