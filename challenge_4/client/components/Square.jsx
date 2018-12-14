@@ -6,7 +6,13 @@ class Square extends React.Component {
   }
 
   render() {
-    return <td className='square' >({this.props.rowIndex}, {this.props.colIndex})</td>;
+    const i = this.props.rowIndex;
+    const j = this.props.colIndex;
+    return (
+      <td onClick={event => this.props.squareClick(i, j)} className='square' >
+        ({i}, {j})
+      </td>
+    );
   }
 }
 

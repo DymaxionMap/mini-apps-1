@@ -14,13 +14,22 @@ class App extends React.Component {
           [null, null, null, null],
         ],
     };
+
+    this.squareClick = this.squareClick.bind(this);
+  }
+
+  squareClick(rowIndex, colIndex) {
+    console.log(`Square (${rowIndex}, ${colIndex}) was clicked`);
+    // this.setState({
+    //   board: this.state.board[rowIndex][colIndex]
+    // });
   }
 
   render() {
     return (
       <div>
         <h1>Connect Four</h1>
-        <Board board={this.state.board} SIZE={this.SIZE} />
+        <Board board={this.state.board} SIZE={this.SIZE} squareClick={this.squareClick}/>
       </div>
     );
   }
