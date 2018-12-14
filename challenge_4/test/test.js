@@ -9,10 +9,19 @@ const fakeApp = {
   BLACK: 'BLACK',
 
   winHorizontal: function (updatedBoard, currentPlayer, rowIndex, colIndex) {
-    const count = updatedBoard[rowIndex].reduce((count, piece) => {
-      return (piece === currentPlayer) ? count + 1 : 0;
-    }, 0);
-    return count >= this.WINNING_COUNT;
+    let count = 0;
+    for (let j = 0; j < this.NUM_COLS; j++) {
+      if (updatedBoard[rowIndex][j] === currentPlayer) {
+        count += 1;
+        if (count >= this.WINNING_COUNT) {
+          return true;
+        }
+      } else {
+        count = 0;
+      }
+    }
+
+    return false;
   },
 
   winVertical: function (updatedBoard, currentPlayer, rowIndex, colIndex) {  
