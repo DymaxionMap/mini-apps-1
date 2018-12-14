@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "start": "nodemon server.js",
     "build": "webpack",
     "watch": "webpack --watch"
@@ -16,8 +16,10 @@
     "@babel/preset-env": "^7.2.0",
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.4",
+    "chai": "^4.2.0",
     "css-loader": "^2.0.0",
     "express": "^4.16.4",
+    "mocha": "^5.2.0",
     "nodemon": "^1.18.8",
     "style-loader": "^0.23.1",
     "webpack": "^4.27.1",
