@@ -56,14 +56,14 @@ class App extends React.Component {
 
   winHorizontal(updatedBoard, currentPlayer, rowIndex, colIndex) {
     const count = updatedBoard[rowIndex].reduce((count, piece) => {
-      return (piece === currentPlayer) ? count + 1 : count;
+      return (piece === currentPlayer) ? count + 1 : 0;
     }, 0);
     return count >= this.WINNING_COUNT;
   }
 
   winVertical(updatedBoard, currentPlayer, rowIndex, colIndex) {  
     const count = updatedBoard.reduce((count, row) => {
-      return (row[colIndex] === currentPlayer) ? count + 1 : count;
+      return (row[colIndex] === currentPlayer) ? count + 1 : 0;
     }, 0);
     return count >= this.WINNING_COUNT;
   }
@@ -73,10 +73,7 @@ class App extends React.Component {
     let i = rowIndex;
     let j = colIndex;
     while (i < this.NUM_ROWS && j < this.NUM_COLS) {
-      if (updatedBoard[i][j] === currentPlayer) { 
-        count += 1;
-      }
-
+      count = (updatedBoard[i][j] === currentPlayer) ? count + 1 : 0;
       i += 1;
       j += 1;
     }
@@ -89,10 +86,7 @@ class App extends React.Component {
     let i = rowIndex;
     let j = colIndex;
     while (i < this.NUM_ROWS && j >= 0) {
-      if (updatedBoard[i][j] === currentPlayer) { 
-        count += 1;
-      }
-      
+      count = (updatedBoard[i][j] === currentPlayer) ? count + 1 : 0;
       i += 1;
       j -= 1;
     }
