@@ -16,6 +16,7 @@ class App extends React.Component {
     this.state = {
       board,
       currentPlayer: this.RED,
+      winner: null,
     };
 
     this.squareClick = this.squareClick.bind(this);
@@ -105,15 +106,23 @@ class App extends React.Component {
     return winMajorDiagonal || winMinorDiagonal;
   }
 
+  declareWinner(currentPlayer) {
+    this.setState({
+      winner: currentPlayer
+    });
+  }
+
   squareClick(rowIndex, colIndex, piece) {
-    if (!piece) {
+    if (!piece && !this.state.winner) {
       const currentPlayer = this.state.currentPlayer;
       const droppedRowIndex = this.dropPiece(rowIndex, colIndex);
       const updatedBoard = this.updateBoard(droppedRowIndex, colIndex, currentPlayer);
       const winHorizontal = this.winHorizontal(updatedBoard, currentPlayer, droppedRowIndex, colIndex);
       const winVertical = this.winVertical(updatedBoard, currentPlayer, droppedRowIndex, colIndex);
       const winDiagonal = this.winDiagonal(updatedBoard, currentPlayer, droppedRowIndex, colIndex);
-      console.log(winDiagonal);
+      if (winHorizontal || winVertical || winDiagonal) {
+        this.declareWinner(currentPlayer);
+      }
       this.updateCurrentPlayer();
     }
   }
@@ -122,6 +131,7 @@ class App extends React.Component {
     return (
       <div>
         <h1>Connect Four</h1>
+        <h2>{this.state.winner ? `${this.state.winner} won!` : '' }</h2>
         <Board board={this.state.board} squareClick={this.squareClick}/>
       </div>
     );
