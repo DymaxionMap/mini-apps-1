@@ -67,6 +67,44 @@ class App extends React.Component {
     return count >= this.WINNING_COUNT;
   }
 
+  winMajorDiagonal(updatedBoard, currentPlayer, rowIndex, colIndex) {
+    let count = 0;
+    let i = rowIndex;
+    let j = colIndex;
+    while (i < this.NUM_ROWS && j < this.NUM_COLS) {
+      if (updatedBoard[i][j] === currentPlayer) { 
+        count += 1;
+      }
+
+      i += 1;
+      j += 1;
+    }
+
+    return count >= this.WINNING_COUNT;
+  }
+
+  winMinorDiagonal(updatedBoard, currentPlayer, rowIndex, colIndex) {
+    let count = 0;
+    let i = rowIndex;
+    let j = colIndex;
+    while (i < this.NUM_ROWS && j >= 0) {
+      if (updatedBoard[i][j] === currentPlayer) { 
+        count += 1;
+      }
+      
+      i += 1;
+      j -= 1;
+    }
+
+    return count >= this.WINNING_COUNT;
+  }
+
+  winDiagonal(updatedBoard, currentPlayer, rowIndex, colIndex) {
+    const winMajorDiagonal = this.winMajorDiagonal(updatedBoard, currentPlayer, rowIndex, colIndex);
+    const winMinorDiagonal = this.winMinorDiagonal(updatedBoard, currentPlayer, rowIndex, colIndex);
+    return winMajorDiagonal || winMinorDiagonal;
+  }
+
   squareClick(rowIndex, colIndex, piece) {
     if (!piece) {
       const currentPlayer = this.state.currentPlayer;
@@ -74,7 +112,8 @@ class App extends React.Component {
       const updatedBoard = this.updateBoard(droppedRowIndex, colIndex, currentPlayer);
       const winHorizontal = this.winHorizontal(updatedBoard, currentPlayer, droppedRowIndex, colIndex);
       const winVertical = this.winVertical(updatedBoard, currentPlayer, droppedRowIndex, colIndex);
-      console.log(winVertical);
+      const winDiagonal = this.winDiagonal(updatedBoard, currentPlayer, droppedRowIndex, colIndex);
+      console.log(winDiagonal);
       this.updateCurrentPlayer();
     }
   }
