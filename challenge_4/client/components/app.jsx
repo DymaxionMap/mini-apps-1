@@ -60,13 +60,12 @@ class App extends React.Component {
     return count >= this.WINNING_COUNT;
   }
 
-  // isColComplete(updatedBoard, currentPlayer, rowIndex, colIndex) {  
-  //   if (rowIndex !== 0) {
-  //     return false;
-  //   }
-
-  //   return updatedBoard.reduce((complete, row) => complete && (row[colIndex] === currentPlayer), true);
-  // }
+  winVertical(updatedBoard, currentPlayer, rowIndex, colIndex) {  
+    const count = updatedBoard.reduce((count, row) => {
+      return (row[colIndex] === currentPlayer) ? count + 1 : count;
+    }, 0);
+    return count >= this.WINNING_COUNT;
+  }
 
   squareClick(rowIndex, colIndex, piece) {
     if (!piece) {
@@ -74,8 +73,8 @@ class App extends React.Component {
       const droppedRowIndex = this.dropPiece(rowIndex, colIndex);
       const updatedBoard = this.updateBoard(droppedRowIndex, colIndex, currentPlayer);
       const winHorizontal = this.winHorizontal(updatedBoard, currentPlayer, droppedRowIndex, colIndex);
-      console.log(winHorizontal);
-      // const colComplete = this.isColComplete(updatedBoard, currentPlayer, droppedRowIndex, colIndex);
+      const winVertical = this.winVertical(updatedBoard, currentPlayer, droppedRowIndex, colIndex);
+      console.log(winVertical);
       this.updateCurrentPlayer();
     }
   }
