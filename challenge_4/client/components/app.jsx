@@ -17,6 +17,7 @@ class App extends React.Component {
       board,
       currentPlayer: this.RED,
       winner: null,
+      tied: null,
     };
 
     this.squareClick = this.squareClick.bind(this);
@@ -106,6 +107,16 @@ class App extends React.Component {
     });
   }
 
+  isTied(updatedBoard) {
+    return updatedBoard.every(row => row.every(Boolean));
+  }
+
+  declareTie() {
+    this.setState({ 
+      tied: true 
+    });
+  }
+
   squareClick(rowIndex, colIndex, piece) {
     if (!piece && !this.state.winner) {
       const currentPlayer = this.state.currentPlayer;
@@ -116,7 +127,10 @@ class App extends React.Component {
       const winDiagonal = this.winDiagonal(updatedBoard, currentPlayer, droppedRowIndex, colIndex);
       if (winHorizontal || winVertical || winDiagonal) {
         this.declareWinner(currentPlayer);
+      } else if (this.isTied(updatedBoard)) {
+        this.declareTie();
       }
+
       this.updateCurrentPlayer();
     }
   }
@@ -126,6 +140,7 @@ class App extends React.Component {
       <div>
         <h1>Connect Four</h1>
         <h2>{this.state.winner ? `${this.state.winner} won!` : '' }</h2>
+        <h2>{this.state.tied ? 'Tie game!' : ''}</h2>
         <Board board={this.state.board} squareClick={this.squareClick}/>
       </div>
     );
