@@ -4,7 +4,7 @@ import Board from './Board.jsx';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.SIZE = props.SIZE;
+    this.WINNING_COUNT = 4;
     this.NUM_ROWS = props.NUM_ROWS;
     this.NUM_COLS = props.NUM_COLS;
     this.RED = 'RED';
@@ -53,24 +53,28 @@ class App extends React.Component {
     return droppedRowIndex;
   }
 
-  isRowComplete(updatedBoard, currentPlayer, rowIndex, colIndex) {
-    return updatedBoard[rowIndex].every(piece => piece === currentPlayer);
+  winHorizontal(updatedBoard, currentPlayer, rowIndex, colIndex) {
+    const count = updatedBoard[rowIndex].reduce((count, piece) => {
+      return (piece === currentPlayer) ? count + 1 : count;
+    }, 0);
+    return count >= this.WINNING_COUNT;
   }
 
-  isColComplete(updatedBoard, currentPlayer, rowIndex, colIndex) {  
-    if (rowIndex !== 0) {
-      return false;
-    }
+  // isColComplete(updatedBoard, currentPlayer, rowIndex, colIndex) {  
+  //   if (rowIndex !== 0) {
+  //     return false;
+  //   }
 
-    return updatedBoard.reduce((complete, row) => complete && (row[colIndex] === currentPlayer), true);
-  }
+  //   return updatedBoard.reduce((complete, row) => complete && (row[colIndex] === currentPlayer), true);
+  // }
 
   squareClick(rowIndex, colIndex, piece) {
     if (!piece) {
       const currentPlayer = this.state.currentPlayer;
       const droppedRowIndex = this.dropPiece(rowIndex, colIndex);
       const updatedBoard = this.updateBoard(droppedRowIndex, colIndex, currentPlayer);
-      // const rowComplete = this.isRowComplete(updatedBoard, currentPlayer, droppedRowIndex, colIndex);
+      const winHorizontal = this.winHorizontal(updatedBoard, currentPlayer, droppedRowIndex, colIndex);
+      console.log(winHorizontal);
       // const colComplete = this.isColComplete(updatedBoard, currentPlayer, droppedRowIndex, colIndex);
       this.updateCurrentPlayer();
     }
