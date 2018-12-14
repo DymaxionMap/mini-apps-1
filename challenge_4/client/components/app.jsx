@@ -4,18 +4,16 @@ import Board from './Board.jsx';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.SIZE = 4;
+    this.SIZE = props.SIZE;
     this.RED = 'RED';
     this.BLACK = 'BLACK';
 
+    const rows = [...Array(props.SIZE)].fill(null);
+    const board = rows.map(() => [...Array(props.SIZE)].fill(null));
+
     this.state = {
+      board,
       currentPlayer: this.RED,
-      board: [
-          [null, null, null, null],
-          [null, null, null, null],
-          [null, null, null, null],
-          [null, null, null, null],
-        ],
     };
 
     this.squareClick = this.squareClick.bind(this);
