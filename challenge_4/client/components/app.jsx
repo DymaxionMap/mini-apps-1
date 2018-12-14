@@ -1,6 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Board from './components/Board.jsx';
+import Board from './Board.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -83,4 +82,4 @@ class App extends React.Component {
   }
 }
 
-ReactDOM.render(<App/>, document.getElementById('root'));
+export default App;
