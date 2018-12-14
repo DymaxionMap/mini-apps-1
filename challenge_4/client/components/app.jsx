@@ -55,11 +55,21 @@ class App extends React.Component {
     return updatedBoard[rowIndex].every(piece => piece === currentPlayer);
   }
 
+  isColComplete(updatedBoard, currentPlayer, rowIndex, colIndex) {  
+    if (rowIndex !== 0) {
+      return false;
+    }
+
+    return updatedBoard.reduce((complete, row) => complete && (row[colIndex] === currentPlayer), true);
+  }
+
   squareClick(rowIndex, colIndex, piece) {
     if (!piece) {
+      const currentPlayer = this.state.currentPlayer;
       const droppedRowIndex = this.dropPiece(rowIndex, colIndex);
-      const updatedBoard = this.updateBoard(droppedRowIndex, colIndex, this.state.currentPlayer);
-      const rowComplete = this.isRowComplete(updatedBoard, this.state.currentPlayer, droppedRowIndex, colIndex);
+      const updatedBoard = this.updateBoard(droppedRowIndex, colIndex, currentPlayer);
+      const rowComplete = this.isRowComplete(updatedBoard, currentPlayer, droppedRowIndex, colIndex);
+      const colComplete = this.isColComplete(updatedBoard, currentPlayer, droppedRowIndex, colIndex);
       this.updateCurrentPlayer();
     }
   }
