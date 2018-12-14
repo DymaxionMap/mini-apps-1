@@ -34,23 +34,23 @@ class App extends React.Component {
     return updatedBoard;
   }
 
-  dropPiece(clickedRowIndex, clickedColIndex) {
-    let droppedRowIndex = clickedRowIndex;
-    for (let i = clickedRowIndex; i < this.SIZE - 1; i++) {
-      if (!this.state.board[i + 1][clickedColIndex]) {
-        droppedRowIndex += 1;
-      }
-    }
-
-    return droppedRowIndex;
-  }
-
   updateBoard(rowIndex, colIndex, player) {
     const updatedBoard = this.generateUpdatedBoard(rowIndex, colIndex, player);
     this.setState({
       board: updatedBoard
     });
     return updatedBoard;
+  }
+
+  dropPiece(clickedRowIndex, clickedColIndex) {
+    let droppedRowIndex = clickedRowIndex;
+    for (let i = clickedRowIndex; i < this.NUM_ROWS - 1; i++) {
+      if (!this.state.board[i + 1][clickedColIndex]) {
+        droppedRowIndex += 1;
+      }
+    }
+
+    return droppedRowIndex;
   }
 
   isRowComplete(updatedBoard, currentPlayer, rowIndex, colIndex) {
@@ -68,8 +68,8 @@ class App extends React.Component {
   squareClick(rowIndex, colIndex, piece) {
     if (!piece) {
       const currentPlayer = this.state.currentPlayer;
-      // const droppedRowIndex = this.dropPiece(rowIndex, colIndex);
-      // const updatedBoard = this.updateBoard(droppedRowIndex, colIndex, currentPlayer);
+      const droppedRowIndex = this.dropPiece(rowIndex, colIndex);
+      const updatedBoard = this.updateBoard(droppedRowIndex, colIndex, currentPlayer);
       // const rowComplete = this.isRowComplete(updatedBoard, currentPlayer, droppedRowIndex, colIndex);
       // const colComplete = this.isColComplete(updatedBoard, currentPlayer, droppedRowIndex, colIndex);
       this.updateCurrentPlayer();
