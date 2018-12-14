@@ -23,7 +23,7 @@ class App extends React.Component {
   }
 
   updateCurrentPlayer() {
-    const nextPlayer = this.currentPlayer === this.RED ? this.BLACK : this.RED;
+    const nextPlayer = this.state.currentPlayer === this.RED ? this.BLACK : this.RED;
     this.setState({
       currentPlayer: nextPlayer
     });
@@ -54,12 +54,8 @@ class App extends React.Component {
 
   squareClick(rowIndex, colIndex) {
     console.log(`Square (${rowIndex}, ${colIndex}) was clicked`);
-    const updatedBoard = this.makeUpdatedBoard(rowIndex, colIndex, this.RED);
-    this.setState({
-      board: updatedBoard
-    });
-    // this.updateBoard(rowIndex, colIndex, this.currentPlayer);
-    // this.updateCurrentPlayer();
+    this.updateBoard(rowIndex, colIndex, this.state.currentPlayer);
+    this.updateCurrentPlayer();
   }
 
   render() {
